@@ -1,0 +1,951 @@
+gp,seg_ind,seg_cz,seg_size,prem_count
+"Agricu_A_C","Agricu","Coastal","All",175
+"Agricu_A_I","Agricu","Coastal","All",10
+"Missin_M_C","Agricu","Coastal","All",2
+"Agricu_A_C","Agricu","Inland","All",20
+"Agricu_A_I","Agricu","Inland","All",185
+"Missin_S_I","Agricu","Inland","All",1
+"Agricu_A_N","Agricu","North Central Valley","All",190
+"Agricu_A_S","Agricu","North Central Valley","All",8
+"Manufa_M_N","Agricu","North Central Valley","All",3
+"Missin_S_N","Agricu","North Central Valley","All",3
+"Office_M_S","Agricu","North Central Valley","All",1
+"Agricu_A_N","Agricu","South Central Valley","All",1
+"Agricu_A_S","Agricu","South Central Valley","All",185
+"Office_M_S","Agricu","South Central Valley","All",1
+"Office_S_S","Agricu","South Central Valley","All",1
+"Retail_M_S","Agricu","South Central Valley","All",1
+"Automo_M_C","Automo","Coastal","Medium/Large",188
+"Automo_M_I","Automo","Coastal","Medium/Large",55
+"Manufa_M_C","Automo","Coastal","Medium/Large",1
+"Automo_M_C","Automo","Coastal","Small",5
+"Automo_M_I","Automo","Coastal","Small",3
+"Automo_S_C","Automo","Coastal","Small",196
+"Automo_S_I","Automo","Coastal","Small",48
+"Manufa_M_C","Automo","Coastal","Small",1
+"Manufa_M_I","Automo","Coastal","Small",1
+"Missin_S_C","Automo","Coastal","Small",1
+"Retail_S_C","Automo","Coastal","Small",1
+"Wareho_S_I","Automo","Coastal","Small",1
+"Automo_M_I","Automo","Inland","Medium/Large",128
+"Automo_M_I","Automo","Inland","Small",5
+"Automo_S_C","Automo","Inland","Small",2
+"Automo_S_I","Automo","Inland","Small",148
+"Automo_M_I","Automo","North Central Valley","Medium/Large",3
+"Automo_M_N","Automo","North Central Valley","Medium/Large",193
+"Automo_M_S","Automo","North Central Valley","Medium/Large",5
+"Missin_M_N","Automo","North Central Valley","Medium/Large",1
+"Automo_M_N","Automo","North Central Valley","Small",3
+"Automo_S_I","Automo","North Central Valley","Small",3
+"Automo_S_N","Automo","North Central Valley","Small",196
+"Automo_S_S","Automo","North Central Valley","Small",8
+"Missin_S_N","Automo","North Central Valley","Small",1
+"Automo_M_S","Automo","South Central Valley","Medium/Large",189
+"FullSe_S_S","Automo","South Central Valley","Medium/Large",1
+"Missin_M_S","Automo","South Central Valley","Medium/Large",1
+"Proper_M_S","Automo","South Central Valley","Medium/Large",1
+"Automo_M_S","Automo","South Central Valley","Small",2
+"Automo_S_S","Automo","South Central Valley","Small",190
+"Missin_S_S","Automo","South Central Valley","Small",2
+"Proper_S_S","Automo","South Central Valley","Small",1
+"Constr_A_C","Constr","Coastal","All",181
+"Constr_A_I","Constr","Coastal","All",35
+"Missin_M_I","Constr","Coastal","All",1
+"Missin_S_C","Constr","Coastal","All",1
+"Missin_S_I","Constr","Coastal","All",3
+"Constr_A_C","Constr","Inland","All",2
+"Constr_A_I","Constr","Inland","All",139
+"Constr_A_S","Constr","Inland","All",1
+"Missin_M_I","Constr","Inland","All",1
+"Missin_S_I","Constr","Inland","All",1
+"Proper_S_I","Constr","Inland","All",1
+"Agricu_A_N","Constr","North Central Valley","All",1
+"Constr_A_I","Constr","North Central Valley","All",6
+"Constr_A_N","Constr","North Central Valley","All",177
+"Constr_A_S","Constr","North Central Valley","All",2
+"Lodgin_S_N","Constr","North Central Valley","All",1
+"Manufa_S_N","Constr","North Central Valley","All",1
+"Missin_S_N","Constr","North Central Valley","All",1
+"Automo_S_S","Constr","South Central Valley","All",1
+"Constr_A_S","Constr","South Central Valley","All",178
+"Missin_M_S","Constr","South Central Valley","All",3
+"Missin_S_S","Constr","South Central Valley","All",2
+"Educat_M_C","Educat","Coastal","Medium/Large",192
+"Educat_M_I","Educat","Coastal","Medium/Large",37
+"Educat_S_C","Educat","Coastal","Medium/Large",2
+"Educat_M_C","Educat","Coastal","Small",1
+"Educat_S_C","Educat","Coastal","Small",191
+"Educat_S_I","Educat","Coastal","Small",42
+"Missin_S_C","Educat","Coastal","Small",2
+"Educat_M_C","Educat","Inland","Medium/Large",4
+"Educat_M_I","Educat","Inland","Medium/Large",160
+"Educat_S_I","Educat","Inland","Medium/Large",1
+"Educat_S_C","Educat","Inland","Small",5
+"Educat_S_I","Educat","Inland","Small",154
+"Educat_S_S","Educat","Inland","Small",1
+"Educat_M_C","Educat","North Central Valley","Medium/Large",1
+"Educat_M_I","Educat","North Central Valley","Medium/Large",3
+"Educat_M_N","Educat","North Central Valley","Medium/Large",198
+"Educat_M_S","Educat","North Central Valley","Medium/Large",7
+"Educat_S_N","Educat","North Central Valley","Medium/Large",2
+"Missin_M_N","Educat","North Central Valley","Medium/Large",1
+"Educat_S_I","Educat","North Central Valley","Small",2
+"Educat_S_N","Educat","North Central Valley","Small",195
+"Educat_S_S","Educat","North Central Valley","Small",4
+"Missin_M_N","Educat","North Central Valley","Small",1
+"Missin_S_N","Educat","North Central Valley","Small",1
+"Educat_M_N","Educat","South Central Valley","Medium/Large",2
+"Educat_M_S","Educat","South Central Valley","Medium/Large",191
+"Educat_S_S","Educat","South Central Valley","Medium/Large",5
+"Educat_S_N","Educat","South Central Valley","Small",1
+"Educat_S_S","Educat","South Central Valley","Small",178
+"FullSe_M_C","FullSe","Coastal","Medium/Large",181
+"FullSe_M_I","FullSe","Coastal","Medium/Large",36
+"FullSe_S_C","FullSe","Coastal","Medium/Large",1
+"FullSe_S_I","FullSe","Coastal","Medium/Large",1
+"Limite_M_C","FullSe","Coastal","Medium/Large",1
+"Missin_M_C","FullSe","Coastal","Medium/Large",3
+"FullSe_M_C","FullSe","Coastal","Small",7
+"FullSe_M_I","FullSe","Coastal","Small",1
+"FullSe_S_C","FullSe","Coastal","Small",195
+"FullSe_S_I","FullSe","Coastal","Small",34
+"Limite_S_C","FullSe","Coastal","Small",2
+"Missin_M_C","FullSe","Coastal","Small",1
+"Missin_S_C","FullSe","Coastal","Small",1
+"Missin_S_I","FullSe","Coastal","Small",1
+"Office_S_C","FullSe","Coastal","Small",1
+"FullSe_M_C","FullSe","Inland","Medium/Large",2
+"FullSe_M_I","FullSe","Inland","Medium/Large",144
+"FullSe_S_I","FullSe","Inland","Medium/Large",1
+"Missin_M_I","FullSe","Inland","Medium/Large",3
+"FullSe_M_I","FullSe","Inland","Small",4
+"FullSe_S_I","FullSe","Inland","Small",152
+"Grocer_S_I","FullSe","Inland","Small",1
+"Limite_S_I","FullSe","Inland","Small",2
+"Missin_S_I","FullSe","Inland","Small",1
+"FullSe_M_I","FullSe","North Central Valley","Medium/Large",1
+"FullSe_M_N","FullSe","North Central Valley","Medium/Large",187
+"FullSe_M_S","FullSe","North Central Valley","Medium/Large",5
+"FullSe_S_N","FullSe","North Central Valley","Medium/Large",2
+"Limite_M_N","FullSe","North Central Valley","Medium/Large",3
+"Missin_M_N","FullSe","North Central Valley","Medium/Large",7
+"FullSe_M_N","FullSe","North Central Valley","Small",3
+"FullSe_M_S","FullSe","North Central Valley","Small",1
+"FullSe_S_I","FullSe","North Central Valley","Small",1
+"FullSe_S_N","FullSe","North Central Valley","Small",193
+"FullSe_S_S","FullSe","North Central Valley","Small",3
+"Grocer_S_N","FullSe","North Central Valley","Small",1
+"Limite_M_N","FullSe","North Central Valley","Small",1
+"Limite_S_N","FullSe","North Central Valley","Small",3
+"Lodgin_M_N","FullSe","North Central Valley","Small",1
+"Missin_M_N","FullSe","North Central Valley","Small",1
+"FullSe_M_N","FullSe","South Central Valley","Medium/Large",2
+"FullSe_M_S","FullSe","South Central Valley","Medium/Large",184
+"FullSe_S_S","FullSe","South Central Valley","Medium/Large",2
+"Limite_M_S","FullSe","South Central Valley","Medium/Large",1
+"Missin_M_S","FullSe","South Central Valley","Medium/Large",2
+"FullSe_M_S","FullSe","South Central Valley","Small",5
+"FullSe_S_S","FullSe","South Central Valley","Small",186
+"Limite_M_S","FullSe","South Central Valley","Small",1
+"Limite_S_N","FullSe","South Central Valley","Small",1
+"Limite_S_S","FullSe","South Central Valley","Small",5
+"GasSta_A_C","GasSta","Coastal","All",188
+"GasSta_A_I","GasSta","Coastal","All",40
+"Grocer_M_C","GasSta","Coastal","All",1
+"GasSta_A_C","GasSta","Inland","All",4
+"GasSta_A_I","GasSta","Inland","All",146
+"Missin_S_I","GasSta","Inland","All",1
+"GasSta_A_I","GasSta","North Central Valley","All",3
+"GasSta_A_N","GasSta","North Central Valley","All",186
+"GasSta_A_S","GasSta","North Central Valley","All",12
+"Missin_M_N","GasSta","North Central Valley","All",1
+"GasSta_A_N","GasSta","South Central Valley","All",2
+"GasSta_A_S","GasSta","South Central Valley","All",179
+"Missin_M_S","GasSta","South Central Valley","All",2
+"Govern_M_C","Govern","Coastal","Medium/Large",198
+"Govern_M_I","Govern","Coastal","Medium/Large",36
+"Health_M_C","Govern","Coastal","Medium/Large",1
+"Missin_M_C","Govern","Coastal","Medium/Large",2
+"Educat_S_C","Govern","Coastal","Small",1
+"Govern_S_C","Govern","Coastal","Small",193
+"Govern_S_I","Govern","Coastal","Small",47
+"Missin_M_C","Govern","Coastal","Small",1
+"Missin_S_C","Govern","Coastal","Small",2
+"Missin_S_I","Govern","Coastal","Small",1
+"Office_S_C","Govern","Coastal","Small",1
+"Govern_M_C","Govern","Inland","Medium/Large",2
+"Govern_M_I","Govern","Inland","Medium/Large",157
+"Missin_M_I","Govern","Inland","Medium/Large",2
+"Govern_M_I","Govern","Inland","Small",1
+"Govern_S_C","Govern","Inland","Small",3
+"Govern_S_I","Govern","Inland","Small",147
+"Govern_S_S","Govern","Inland","Small",1
+"Grocer_S_I","Govern","Inland","Small",1
+"Health_S_I","Govern","Inland","Small",1
+"Transp_M_I","Govern","Inland","Small",1
+"Govern_M_I","Govern","North Central Valley","Medium/Large",5
+"Govern_M_N","Govern","North Central Valley","Medium/Large",199
+"Govern_M_S","Govern","North Central Valley","Medium/Large",4
+"Health_M_N","Govern","North Central Valley","Medium/Large",1
+"Missin_M_N","Govern","North Central Valley","Medium/Large",1
+"Govern_S_I","Govern","North Central Valley","Small",3
+"Govern_S_N","Govern","North Central Valley","Small",194
+"Govern_S_S","Govern","North Central Valley","Small",8
+"Missin_S_N","Govern","North Central Valley","Small",2
+"Proper_M_N","Govern","North Central Valley","Small",1
+"Educat_S_S","Govern","South Central Valley","Medium/Large",1
+"Govern_M_S","Govern","South Central Valley","Medium/Large",195
+"Govern_S_S","Govern","South Central Valley","Medium/Large",1
+"Health_M_S","Govern","South Central Valley","Medium/Large",1
+"Govern_M_S","Govern","South Central Valley","Small",1
+"Govern_S_N","Govern","South Central Valley","Small",2
+"Govern_S_S","Govern","South Central Valley","Small",189
+"Missin_M_S","Govern","South Central Valley","Small",1
+"Missin_S_S","Govern","South Central Valley","Small",1
+"Proper_S_S","Govern","South Central Valley","Small",1
+"Religi_A_S","Govern","South Central Valley","Small",1
+"Retail_S_S","Govern","South Central Valley","Small",1
+"Grocer_M_C","Grocer","Coastal","Medium/Large",188
+"Grocer_M_I","Grocer","Coastal","Medium/Large",49
+"Grocer_S_C","Grocer","Coastal","Medium/Large",1
+"Missin_M_C","Grocer","Coastal","Medium/Large",1
+"Missin_M_I","Grocer","Coastal","Medium/Large",1
+"Grocer_M_C","Grocer","Coastal","Small",1
+"Grocer_S_C","Grocer","Coastal","Small",196
+"Grocer_S_I","Grocer","Coastal","Small",37
+"Limite_M_C","Grocer","Coastal","Small",1
+"Manufa_S_C","Grocer","Coastal","Small",1
+"Missin_S_C","Grocer","Coastal","Small",2
+"Retail_S_C","Grocer","Coastal","Small",1
+"Wareho_S_C","Grocer","Coastal","Small",1
+"Grocer_M_C","Grocer","Inland","Medium/Large",6
+"Grocer_M_I","Grocer","Inland","Medium/Large",142
+"Grocer_S_I","Grocer","Inland","Medium/Large",3
+"Missin_M_I","Grocer","Inland","Medium/Large",4
+"Grocer_M_I","Grocer","Inland","Small",1
+"Grocer_S_I","Grocer","Inland","Small",148
+"Grocer_S_S","Grocer","Inland","Small",1
+"Missin_S_I","Grocer","Inland","Small",1
+"Proper_S_I","Grocer","Inland","Small",1
+"GasSta_A_N","Grocer","North Central Valley","Medium/Large",2
+"Grocer_M_I","Grocer","North Central Valley","Medium/Large",3
+"Grocer_M_N","Grocer","North Central Valley","Medium/Large",192
+"Grocer_M_S","Grocer","North Central Valley","Medium/Large",5
+"Grocer_S_N","Grocer","North Central Valley","Medium/Large",3
+"Missin_M_N","Grocer","North Central Valley","Medium/Large",1
+"Missin_S_N","Grocer","North Central Valley","Medium/Large",1
+"GasSta_A_N","Grocer","North Central Valley","Small",1
+"Grocer_M_N","Grocer","North Central Valley","Small",6
+"Grocer_M_S","Grocer","North Central Valley","Small",1
+"Grocer_S_I","Grocer","North Central Valley","Small",1
+"Grocer_S_N","Grocer","North Central Valley","Small",192
+"Grocer_S_S","Grocer","North Central Valley","Small",8
+"Limite_S_N","Grocer","North Central Valley","Small",1
+"Lodgin_M_N","Grocer","North Central Valley","Small",1
+"Missin_S_N","Grocer","North Central Valley","Small",2
+"GasSta_A_S","Grocer","South Central Valley","Medium/Large",1
+"Grocer_M_S","Grocer","South Central Valley","Medium/Large",186
+"Grocer_S_S","Grocer","South Central Valley","Medium/Large",4
+"Missin_M_S","Grocer","South Central Valley","Medium/Large",4
+"Wareho_M_S","Grocer","South Central Valley","Medium/Large",1
+"Grocer_M_S","Grocer","South Central Valley","Small",1
+"Grocer_S_S","Grocer","South Central Valley","Small",179
+"Missin_M_S","Grocer","South Central Valley","Small",1
+"Missin_S_S","Grocer","South Central Valley","Small",1
+"Retail_S_S","Grocer","South Central Valley","Small",1
+"Health_M_C","Health","Coastal","Medium/Large",190
+"Health_M_I","Health","Coastal","Medium/Large",42
+"Missin_M_C","Health","Coastal","Medium/Large",2
+"Health_M_C","Health","Coastal","Small",3
+"Health_S_C","Health","Coastal","Small",193
+"Health_S_I","Health","Coastal","Small",32
+"Missin_S_C","Health","Coastal","Small",2
+"Health_M_C","Health","Inland","Medium/Large",3
+"Health_M_I","Health","Inland","Medium/Large",152
+"Missin_M_I","Health","Inland","Medium/Large",1
+"Health_M_I","Health","Inland","Small",2
+"Health_S_I","Health","Inland","Small",161
+"Missin_M_I","Health","Inland","Small",1
+"Missin_S_I","Health","Inland","Small",1
+"Office_S_I","Health","Inland","Small",1
+"Health_M_I","Health","North Central Valley","Medium/Large",3
+"Health_M_N","Health","North Central Valley","Medium/Large",197
+"Health_M_S","Health","North Central Valley","Medium/Large",5
+"Health_S_N","Health","North Central Valley","Medium/Large",1
+"Missin_M_N","Health","North Central Valley","Medium/Large",2
+"Health_S_I","Health","North Central Valley","Small",3
+"Health_S_N","Health","North Central Valley","Small",190
+"Health_S_S","Health","North Central Valley","Small",5
+"Missin_S_N","Health","North Central Valley","Small",1
+"Proper_M_N","Health","North Central Valley","Small",1
+"Health_M_N","Health","South Central Valley","Medium/Large",2
+"Health_M_S","Health","South Central Valley","Medium/Large",189
+"Missin_M_S","Health","South Central Valley","Medium/Large",3
+"Constr_A_S","Health","South Central Valley","Small",1
+"Educat_S_S","Health","South Central Valley","Small",5
+"Health_M_S","Health","South Central Valley","Small",4
+"Health_S_N","Health","South Central Valley","Small",3
+"Health_S_S","Health","South Central Valley","Small",193
+"Missin_S_S","Health","South Central Valley","Small",4
+"FullSe_M_C","Limite","Coastal","Medium/Large",1
+"Limite_M_C","Limite","Coastal","Medium/Large",190
+"Limite_M_I","Limite","Coastal","Medium/Large",43
+"Limite_S_C","Limite","Coastal","Medium/Large",2
+"Missin_M_C","Limite","Coastal","Medium/Large",2
+"FullSe_M_C","Limite","Coastal","Small",1
+"Grocer_M_C","Limite","Coastal","Small",1
+"Grocer_S_C","Limite","Coastal","Small",1
+"Limite_M_C","Limite","Coastal","Small",4
+"Limite_M_I","Limite","Coastal","Small",1
+"Limite_S_C","Limite","Coastal","Small",186
+"Limite_S_I","Limite","Coastal","Small",47
+"Limite_M_C","Limite","Inland","Medium/Large",1
+"Limite_M_I","Limite","Inland","Medium/Large",144
+"Limite_S_I","Limite","Inland","Medium/Large",5
+"FullSe_M_I","Limite","Inland","Small",1
+"FullSe_S_I","Limite","Inland","Small",1
+"GasSta_A_I","Limite","Inland","Small",1
+"Grocer_M_I","Limite","Inland","Small",1
+"Limite_M_I","Limite","Inland","Small",6
+"Limite_S_C","Limite","Inland","Small",1
+"Limite_S_I","Limite","Inland","Small",137
+"Missin_M_I","Limite","Inland","Small",1
+"Missin_S_I","Limite","Inland","Small",2
+"Proper_M_I","Limite","Inland","Small",1
+"FullSe_M_N","Limite","North Central Valley","Medium/Large",3
+"FullSe_S_N","Limite","North Central Valley","Medium/Large",1
+"Limite_M_I","Limite","North Central Valley","Medium/Large",3
+"Limite_M_N","Limite","North Central Valley","Medium/Large",183
+"Limite_M_S","Limite","North Central Valley","Medium/Large",4
+"Limite_S_N","Limite","North Central Valley","Medium/Large",4
+"Missin_M_N","Limite","North Central Valley","Medium/Large",4
+"Missin_M_S","Limite","North Central Valley","Medium/Large",1
+"Limite_M_N","Limite","North Central Valley","Small",8
+"Limite_S_I","Limite","North Central Valley","Small",1
+"Limite_S_N","Limite","North Central Valley","Small",178
+"Limite_S_S","Limite","North Central Valley","Small",4
+"Missin_S_N","Limite","North Central Valley","Small",1
+"FullSe_M_S","Limite","South Central Valley","Medium/Large",1
+"GasSta_A_S","Limite","South Central Valley","Medium/Large",1
+"Limite_M_N","Limite","South Central Valley","Medium/Large",1
+"Limite_M_S","Limite","South Central Valley","Medium/Large",192
+"Limite_S_S","Limite","South Central Valley","Medium/Large",3
+"Missin_M_S","Limite","South Central Valley","Medium/Large",2
+"Limite_M_S","Limite","South Central Valley","Small",2
+"Limite_S_N","Limite","South Central Valley","Small",5
+"Limite_S_S","Limite","South Central Valley","Small",185
+"Lodgin_M_C","Lodgin","Coastal","Medium/Large",194
+"Lodgin_M_I","Lodgin","Coastal","Medium/Large",34
+"Lodgin_S_C","Lodgin","Coastal","Medium/Large",1
+"Lodgin_S_I","Lodgin","Coastal","Medium/Large",1
+"Missin_M_C","Lodgin","Coastal","Medium/Large",3
+"Office_M_C","Lodgin","Coastal","Medium/Large",1
+"Lodgin_M_C","Lodgin","Coastal","Small",1
+"Lodgin_S_C","Lodgin","Coastal","Small",189
+"Lodgin_S_I","Lodgin","Coastal","Small",38
+"Missin_M_C","Lodgin","Coastal","Small",1
+"Missin_S_C","Lodgin","Coastal","Small",3
+"Office_S_C","Lodgin","Coastal","Small",1
+"Person_A_C","Lodgin","Coastal","Small",1
+"Lodgin_M_C","Lodgin","Inland","Medium/Large",1
+"Lodgin_M_I","Lodgin","Inland","Medium/Large",159
+"Lodgin_M_S","Lodgin","Inland","Medium/Large",1
+"Lodgin_S_I","Lodgin","Inland","Medium/Large",1
+"Missin_M_I","Lodgin","Inland","Medium/Large",3
+"Lodgin_M_I","Lodgin","Inland","Small",2
+"Lodgin_S_C","Lodgin","Inland","Small",6
+"Lodgin_S_I","Lodgin","Inland","Small",153
+"Office_M_I","Lodgin","Inland","Small",1
+"Office_S_I","Lodgin","Inland","Small",1
+"Lodgin_M_I","Lodgin","North Central Valley","Medium/Large",3
+"Lodgin_M_N","Lodgin","North Central Valley","Medium/Large",183
+"Lodgin_M_S","Lodgin","North Central Valley","Medium/Large",11
+"Lodgin_S_N","Lodgin","North Central Valley","Medium/Large",2
+"Missin_M_N","Lodgin","North Central Valley","Medium/Large",6
+"Lodgin_M_N","Lodgin","North Central Valley","Small",4
+"Lodgin_S_I","Lodgin","North Central Valley","Small",5
+"Lodgin_S_N","Lodgin","North Central Valley","Small",190
+"Lodgin_S_S","Lodgin","North Central Valley","Small",9
+"Missin_M_N","Lodgin","North Central Valley","Small",1
+"Missin_S_N","Lodgin","North Central Valley","Small",1
+"FullSe_M_S","Lodgin","South Central Valley","Medium/Large",1
+"Lodgin_M_N","Lodgin","South Central Valley","Medium/Large",8
+"Lodgin_M_S","Lodgin","South Central Valley","Medium/Large",181
+"Lodgin_S_S","Lodgin","South Central Valley","Medium/Large",2
+"Missin_M_S","Lodgin","South Central Valley","Medium/Large",3
+"FullSe_S_S","Lodgin","South Central Valley","Small",1
+"Lodgin_S_N","Lodgin","South Central Valley","Small",3
+"Lodgin_S_S","Lodgin","South Central Valley","Small",184
+"Missin_S_S","Lodgin","South Central Valley","Small",1
+"Manufa_M_C","Manufa","Coastal","Medium/Large",188
+"Manufa_M_I","Manufa","Coastal","Medium/Large",54
+"Manufa_S_C","Manufa","Coastal","Medium/Large",1
+"Missin_M_C","Manufa","Coastal","Medium/Large",3
+"Missin_M_I","Manufa","Coastal","Medium/Large",1
+"Retail_M_I","Manufa","Coastal","Medium/Large",1
+"Wareho_M_C","Manufa","Coastal","Medium/Large",2
+"Wareho_M_I","Manufa","Coastal","Medium/Large",2
+"Constr_A_C","Manufa","Coastal","Small",2
+"Manufa_M_C","Manufa","Coastal","Small",3
+"Manufa_S_C","Manufa","Coastal","Small",188
+"Manufa_S_I","Manufa","Coastal","Small",41
+"Office_M_C","Manufa","Coastal","Small",1
+"Wareho_S_C","Manufa","Coastal","Small",1
+"Manufa_M_C","Manufa","Inland","Medium/Large",4
+"Manufa_M_I","Manufa","Inland","Medium/Large",135
+"Manufa_M_S","Manufa","Inland","Medium/Large",3
+"Manufa_S_I","Manufa","Inland","Medium/Large",3
+"Missin_M_I","Manufa","Inland","Medium/Large",2
+"Wareho_M_I","Manufa","Inland","Medium/Large",2
+"Constr_A_I","Manufa","Inland","Small",2
+"Grocer_S_I","Manufa","Inland","Small",1
+"Manufa_M_I","Manufa","Inland","Small",1
+"Manufa_S_C","Manufa","Inland","Small",2
+"Manufa_S_I","Manufa","Inland","Small",143
+"Missin_S_I","Manufa","Inland","Small",3
+"Manufa_M_I","Manufa","North Central Valley","Medium/Large",4
+"Manufa_M_N","Manufa","North Central Valley","Medium/Large",187
+"Manufa_M_S","Manufa","North Central Valley","Medium/Large",2
+"Manufa_S_S","Manufa","North Central Valley","Medium/Large",1
+"Missin_M_N","Manufa","North Central Valley","Medium/Large",2
+"Wareho_M_N","Manufa","North Central Valley","Medium/Large",1
+"Agricu_A_N","Manufa","North Central Valley","Small",1
+"Manufa_M_N","Manufa","North Central Valley","Small",3
+"Manufa_S_I","Manufa","North Central Valley","Small",5
+"Manufa_S_N","Manufa","North Central Valley","Small",188
+"Manufa_S_S","Manufa","North Central Valley","Small",3
+"Missin_S_N","Manufa","North Central Valley","Small",1
+"Wareho_S_N","Manufa","North Central Valley","Small",1
+"Manufa_M_S","Manufa","South Central Valley","Medium/Large",191
+"Missin_M_S","Manufa","South Central Valley","Medium/Large",1
+"Office_M_S","Manufa","South Central Valley","Medium/Large",2
+"Educat_S_S","Manufa","South Central Valley","Small",1
+"Manufa_M_S","Manufa","South Central Valley","Small",1
+"Manufa_S_N","Manufa","South Central Valley","Small",1
+"Manufa_S_S","Manufa","South Central Valley","Small",195
+"Missin_S_S","Manufa","South Central Valley","Small",2
+"Automo_M_C","Missin","Coastal","Medium/Large",4
+"Educat_M_C","Missin","Coastal","Medium/Large",1
+"FullSe_M_C","Missin","Coastal","Medium/Large",3
+"GasSta_A_C","Missin","Coastal","Medium/Large",2
+"Grocer_M_C","Missin","Coastal","Medium/Large",3
+"Grocer_M_I","Missin","Coastal","Medium/Large",1
+"Limite_M_C","Missin","Coastal","Medium/Large",2
+"Lodgin_M_C","Missin","Coastal","Medium/Large",3
+"Manufa_M_I","Missin","Coastal","Medium/Large",2
+"Missin_M_C","Missin","Coastal","Medium/Large",123
+"Missin_M_I","Missin","Coastal","Medium/Large",17
+"Missin_S_I","Missin","Coastal","Medium/Large",1
+"Office_M_I","Missin","Coastal","Medium/Large",1
+"Proper_M_C","Missin","Coastal","Medium/Large",3
+"Proper_S_C","Missin","Coastal","Medium/Large",1
+"Retail_M_C","Missin","Coastal","Medium/Large",1
+"Transp_M_C","Missin","Coastal","Medium/Large",4
+"Transp_M_I","Missin","Coastal","Medium/Large",1
+"Wareho_M_C","Missin","Coastal","Medium/Large",2
+"Agricu_A_C","Missin","Coastal","Small",2
+"Automo_M_C","Missin","Coastal","Small",3
+"Automo_S_C","Missin","Coastal","Small",1
+"Constr_A_C","Missin","Coastal","Small",11
+"Constr_A_I","Missin","Coastal","Small",5
+"Educat_S_C","Missin","Coastal","Small",1
+"FullSe_M_C","Missin","Coastal","Small",5
+"FullSe_M_I","Missin","Coastal","Small",2
+"FullSe_S_C","Missin","Coastal","Small",2
+"FullSe_S_I","Missin","Coastal","Small",1
+"GasSta_A_I","Missin","Coastal","Small",1
+"Govern_M_I","Missin","Coastal","Small",1
+"Grocer_S_C","Missin","Coastal","Small",1
+"Grocer_S_I","Missin","Coastal","Small",1
+"Health_M_C","Missin","Coastal","Small",2
+"Health_S_C","Missin","Coastal","Small",4
+"Limite_M_C","Missin","Coastal","Small",1
+"Limite_S_C","Missin","Coastal","Small",9
+"Limite_S_I","Missin","Coastal","Small",4
+"Lodgin_S_C","Missin","Coastal","Small",3
+"Manufa_S_C","Missin","Coastal","Small",5
+"Missin_M_C","Missin","Coastal","Small",26
+"Missin_M_I","Missin","Coastal","Small",1
+"Missin_S_C","Missin","Coastal","Small",154
+"Missin_S_I","Missin","Coastal","Small",8
+"Office_S_C","Missin","Coastal","Small",3
+"Office_S_I","Missin","Coastal","Small",1
+"Person_A_C","Missin","Coastal","Small",4
+"Person_A_I","Missin","Coastal","Small",1
+"Proper_M_C","Missin","Coastal","Small",2
+"Proper_S_C","Missin","Coastal","Small",3
+"Proper_S_I","Missin","Coastal","Small",2
+"Retail_M_C","Missin","Coastal","Small",1
+"Retail_S_C","Missin","Coastal","Small",2
+"Transp_M_C","Missin","Coastal","Small",1
+"Transp_S_C","Missin","Coastal","Small",2
+"Wareho_M_C","Missin","Coastal","Small",3
+"Wareho_S_C","Missin","Coastal","Small",3
+"Wareho_S_I","Missin","Coastal","Small",3
+"Automo_M_I","Missin","Inland","Medium/Large",1
+"FullSe_M_I","Missin","Inland","Medium/Large",3
+"FullSe_S_I","Missin","Inland","Medium/Large",1
+"Grocer_M_I","Missin","Inland","Medium/Large",1
+"Grocer_S_I","Missin","Inland","Medium/Large",1
+"Health_M_I","Missin","Inland","Medium/Large",1
+"Limite_M_I","Missin","Inland","Medium/Large",1
+"Lodgin_M_I","Missin","Inland","Medium/Large",1
+"Manufa_M_I","Missin","Inland","Medium/Large",1
+"Missin_M_I","Missin","Inland","Medium/Large",106
+"Proper_M_I","Missin","Inland","Medium/Large",1
+"Retail_M_I","Missin","Inland","Medium/Large",3
+"Wareho_M_I","Missin","Inland","Medium/Large",3
+"Agricu_A_I","Missin","Inland","Small",4
+"Automo_M_I","Missin","Inland","Small",2
+"Automo_S_I","Missin","Inland","Small",1
+"Constr_A_I","Missin","Inland","Small",10
+"Educat_S_I","Missin","Inland","Small",1
+"FullSe_M_I","Missin","Inland","Small",7
+"FullSe_S_I","Missin","Inland","Small",8
+"GasSta_A_I","Missin","Inland","Small",2
+"Govern_S_I","Missin","Inland","Small",1
+"Grocer_S_I","Missin","Inland","Small",3
+"Health_S_I","Missin","Inland","Small",3
+"Limite_M_I","Missin","Inland","Small",1
+"Limite_S_I","Missin","Inland","Small",4
+"Limite_S_S","Missin","Inland","Small",1
+"Lodgin_M_I","Missin","Inland","Small",1
+"Lodgin_S_I","Missin","Inland","Small",2
+"Manufa_M_I","Missin","Inland","Small",1
+"Manufa_S_I","Missin","Inland","Small",6
+"Missin_M_I","Missin","Inland","Small",30
+"Missin_S_C","Missin","Inland","Small",3
+"Missin_S_I","Missin","Inland","Small",157
+"Office_S_I","Missin","Inland","Small",6
+"Person_A_I","Missin","Inland","Small",3
+"Proper_M_I","Missin","Inland","Small",1
+"Proper_S_I","Missin","Inland","Small",2
+"Religi_A_C","Missin","Inland","Small",1
+"Religi_A_I","Missin","Inland","Small",1
+"Retail_S_I","Missin","Inland","Small",4
+"Transp_M_I","Missin","Inland","Small",1
+"Transp_S_I","Missin","Inland","Small",1
+"Wareho_S_I","Missin","Inland","Small",4
+"Automo_M_N","Missin","North Central Valley","Medium/Large",2
+"FullSe_M_N","Missin","North Central Valley","Medium/Large",1
+"GasSta_A_N","Missin","North Central Valley","Medium/Large",2
+"Grocer_M_N","Missin","North Central Valley","Medium/Large",1
+"Limite_M_N","Missin","North Central Valley","Medium/Large",1
+"Lodgin_M_N","Missin","North Central Valley","Medium/Large",2
+"Manufa_M_N","Missin","North Central Valley","Medium/Large",1
+"Manufa_S_N","Missin","North Central Valley","Medium/Large",1
+"Missin_M_I","Missin","North Central Valley","Medium/Large",1
+"Missin_M_N","Missin","North Central Valley","Medium/Large",131
+"Missin_M_S","Missin","North Central Valley","Medium/Large",1
+"Office_M_N","Missin","North Central Valley","Medium/Large",2
+"Proper_M_N","Missin","North Central Valley","Medium/Large",1
+"Proper_S_N","Missin","North Central Valley","Medium/Large",1
+"Religi_A_N","Missin","North Central Valley","Medium/Large",1
+"Retail_S_N","Missin","North Central Valley","Medium/Large",1
+"Wareho_M_N","Missin","North Central Valley","Medium/Large",2
+"Agricu_A_N","Missin","North Central Valley","Small",4
+"Automo_M_N","Missin","North Central Valley","Small",1
+"Automo_S_N","Missin","North Central Valley","Small",3
+"Constr_A_N","Missin","North Central Valley","Small",14
+"Constr_A_S","Missin","North Central Valley","Small",1
+"Educat_S_N","Missin","North Central Valley","Small",1
+"FullSe_M_N","Missin","North Central Valley","Small",3
+"FullSe_S_N","Missin","North Central Valley","Small",4
+"GasSta_A_N","Missin","North Central Valley","Small",2
+"Govern_M_N","Missin","North Central Valley","Small",1
+"Govern_S_N","Missin","North Central Valley","Small",2
+"Grocer_M_N","Missin","North Central Valley","Small",1
+"Grocer_S_N","Missin","North Central Valley","Small",4
+"Health_S_N","Missin","North Central Valley","Small",3
+"Limite_M_N","Missin","North Central Valley","Small",3
+"Limite_S_N","Missin","North Central Valley","Small",8
+"Lodgin_S_N","Missin","North Central Valley","Small",4
+"Manufa_S_N","Missin","North Central Valley","Small",6
+"Missin_M_N","Missin","North Central Valley","Small",15
+"Missin_S_I","Missin","North Central Valley","Small",2
+"Missin_S_N","Missin","North Central Valley","Small",160
+"Missin_S_S","Missin","North Central Valley","Small",3
+"Office_M_N","Missin","North Central Valley","Small",2
+"Office_S_N","Missin","North Central Valley","Small",3
+"Person_A_N","Missin","North Central Valley","Small",2
+"Proper_M_N","Missin","North Central Valley","Small",1
+"Proper_S_N","Missin","North Central Valley","Small",3
+"Religi_A_N","Missin","North Central Valley","Small",1
+"Retail_M_N","Missin","North Central Valley","Small",1
+"Retail_S_N","Missin","North Central Valley","Small",5
+"Transp_M_N","Missin","North Central Valley","Small",2
+"Transp_S_N","Missin","North Central Valley","Small",2
+"Wareho_M_N","Missin","North Central Valley","Small",1
+"Wareho_S_N","Missin","North Central Valley","Small",7
+"Agricu_A_S","Missin","South Central Valley","Medium/Large",1
+"Educat_M_S","Missin","South Central Valley","Medium/Large",2
+"GasSta_A_S","Missin","South Central Valley","Medium/Large",2
+"Grocer_M_S","Missin","South Central Valley","Medium/Large",3
+"Health_M_S","Missin","South Central Valley","Medium/Large",1
+"Lodgin_M_S","Missin","South Central Valley","Medium/Large",6
+"Manufa_M_S","Missin","South Central Valley","Medium/Large",1
+"Missin_M_S","Missin","South Central Valley","Medium/Large",135
+"Retail_M_S","Missin","South Central Valley","Medium/Large",2
+"Wareho_M_S","Missin","South Central Valley","Medium/Large",2
+"Agricu_A_S","Missin","South Central Valley","Small",6
+"Automo_M_S","Missin","South Central Valley","Small",4
+"Constr_A_S","Missin","South Central Valley","Small",14
+"Educat_S_S","Missin","South Central Valley","Small",3
+"FullSe_M_S","Missin","South Central Valley","Small",2
+"FullSe_S_S","Missin","South Central Valley","Small",6
+"GasSta_A_S","Missin","South Central Valley","Small",2
+"Grocer_M_S","Missin","South Central Valley","Small",2
+"Grocer_S_S","Missin","South Central Valley","Small",7
+"Health_S_S","Missin","South Central Valley","Small",1
+"Limite_S_S","Missin","South Central Valley","Small",2
+"Lodgin_M_S","Missin","South Central Valley","Small",1
+"Lodgin_S_S","Missin","South Central Valley","Small",4
+"Manufa_M_S","Missin","South Central Valley","Small",1
+"Manufa_S_S","Missin","South Central Valley","Small",1
+"Missin_M_S","Missin","South Central Valley","Small",15
+"Missin_S_N","Missin","South Central Valley","Small",4
+"Missin_S_S","Missin","South Central Valley","Small",160
+"Office_M_S","Missin","South Central Valley","Small",2
+"Office_S_S","Missin","South Central Valley","Small",2
+"Person_A_S","Missin","South Central Valley","Small",4
+"Proper_M_S","Missin","South Central Valley","Small",1
+"Proper_S_S","Missin","South Central Valley","Small",4
+"Retail_S_S","Missin","South Central Valley","Small",6
+"Transp_S_S","Missin","South Central Valley","Small",2
+"Wareho_S_S","Missin","South Central Valley","Small",4
+"Manufa_M_C","Office","Coastal","Medium/Large",1
+"Missin_M_C","Office","Coastal","Medium/Large",1
+"Office_M_C","Office","Coastal","Medium/Large",190
+"Office_M_I","Office","Coastal","Medium/Large",35
+"Wareho_M_C","Office","Coastal","Medium/Large",1
+"Automo_S_C","Office","Coastal","Small",1
+"Health_S_C","Office","Coastal","Small",1
+"Manufa_S_C","Office","Coastal","Small",1
+"Missin_S_C","Office","Coastal","Small",5
+"Office_M_C","Office","Coastal","Small",3
+"Office_S_C","Office","Coastal","Small",191
+"Office_S_I","Office","Coastal","Small",34
+"Proper_S_C","Office","Coastal","Small",1
+"Wareho_S_C","Office","Coastal","Small",1
+"Wareho_S_I","Office","Coastal","Small",1
+"Office_M_C","Office","Inland","Medium/Large",3
+"Office_M_I","Office","Inland","Medium/Large",158
+"Missin_M_I","Office","Inland","Small",1
+"Missin_S_I","Office","Inland","Small",1
+"Office_M_I","Office","Inland","Small",1
+"Office_S_C","Office","Inland","Small",2
+"Office_S_I","Office","Inland","Small",150
+"Proper_S_I","Office","Inland","Small",1
+"Manufa_M_N","Office","North Central Valley","Medium/Large",1
+"Missin_M_N","Office","North Central Valley","Medium/Large",3
+"Office_M_N","Office","North Central Valley","Medium/Large",189
+"Office_M_S","Office","North Central Valley","Medium/Large",3
+"Proper_M_N","Office","North Central Valley","Medium/Large",4
+"Automo_S_N","Office","North Central Valley","Small",1
+"Constr_A_N","Office","North Central Valley","Small",1
+"Manufa_M_N","Office","North Central Valley","Small",2
+"Missin_S_N","Office","North Central Valley","Small",5
+"Missin_S_S","Office","North Central Valley","Small",1
+"Office_M_N","Office","North Central Valley","Small",2
+"Office_S_I","Office","North Central Valley","Small",6
+"Office_S_N","Office","North Central Valley","Small",194
+"Office_S_S","Office","North Central Valley","Small",3
+"Person_A_N","Office","North Central Valley","Small",1
+"Proper_S_N","Office","North Central Valley","Small",2
+"Wareho_S_N","Office","North Central Valley","Small",1
+"Missin_M_S","Office","South Central Valley","Medium/Large",2
+"Office_M_N","Office","South Central Valley","Medium/Large",1
+"Office_M_S","Office","South Central Valley","Medium/Large",190
+"Wareho_M_S","Office","South Central Valley","Medium/Large",1
+"Automo_S_S","Office","South Central Valley","Small",1
+"Educat_S_S","Office","South Central Valley","Small",1
+"Missin_S_S","Office","South Central Valley","Small",6
+"Office_S_N","Office","South Central Valley","Small",3
+"Office_S_S","Office","South Central Valley","Small",192
+"Person_A_S","Office","South Central Valley","Small",1
+"Agricu_A_C","Person","Coastal","All",1
+"Govern_S_C","Person","Coastal","All",1
+"Health_S_C","Person","Coastal","All",1
+"Missin_M_C","Person","Coastal","All",3
+"Missin_S_C","Person","Coastal","All",7
+"Missin_S_I","Person","Coastal","All",1
+"Person_A_C","Person","Coastal","All",192
+"Person_A_I","Person","Coastal","All",35
+"Transp_S_C","Person","Coastal","All",1
+"Grocer_S_I","Person","Inland","All",1
+"Missin_M_I","Person","Inland","All",2
+"Person_A_C","Person","Inland","All",2
+"Person_A_I","Person","Inland","All",154
+"Agricu_A_N","Person","North Central Valley","All",1
+"Educat_S_N","Person","North Central Valley","All",1
+"Missin_S_N","Person","North Central Valley","All",3
+"Office_M_N","Person","North Central Valley","All",1
+"Person_A_I","Person","North Central Valley","All",4
+"Person_A_N","Person","North Central Valley","All",191
+"Person_A_S","Person","North Central Valley","All",3
+"Proper_S_N","Person","North Central Valley","All",1
+"Retail_S_N","Person","North Central Valley","All",1
+"Govern_S_S","Person","South Central Valley","All",1
+"Missin_M_S","Person","South Central Valley","All",3
+"Missin_S_S","Person","South Central Valley","All",1
+"Person_A_N","Person","South Central Valley","All",1
+"Person_A_S","Person","South Central Valley","All",192
+"Proper_M_S","Person","South Central Valley","All",1
+"Manufa_M_C","Proper","Coastal","Medium/Large",1
+"Missin_M_C","Proper","Coastal","Medium/Large",17
+"Missin_M_I","Proper","Coastal","Medium/Large",1
+"Missin_S_C","Proper","Coastal","Medium/Large",1
+"Office_M_C","Proper","Coastal","Medium/Large",2
+"Proper_M_C","Proper","Coastal","Medium/Large",194
+"Proper_M_I","Proper","Coastal","Medium/Large",31
+"Retail_M_C","Proper","Coastal","Medium/Large",1
+"Constr_A_C","Proper","Coastal","Small",2
+"Educat_M_C","Proper","Coastal","Small",1
+"FullSe_S_C","Proper","Coastal","Small",2
+"Govern_S_C","Proper","Coastal","Small",3
+"Govern_S_I","Proper","Coastal","Small",1
+"Health_M_C","Proper","Coastal","Small",1
+"Health_S_C","Proper","Coastal","Small",1
+"Lodgin_S_C","Proper","Coastal","Small",1
+"Manufa_M_I","Proper","Coastal","Small",1
+"Manufa_S_C","Proper","Coastal","Small",2
+"Missin_M_C","Proper","Coastal","Small",7
+"Missin_S_C","Proper","Coastal","Small",12
+"Missin_S_I","Proper","Coastal","Small",2
+"Office_S_C","Proper","Coastal","Small",1
+"Person_A_C","Proper","Coastal","Small",1
+"Person_A_I","Proper","Coastal","Small",1
+"Proper_M_I","Proper","Coastal","Small",2
+"Proper_S_C","Proper","Coastal","Small",193
+"Proper_S_I","Proper","Coastal","Small",45
+"Religi_A_I","Proper","Coastal","Small",1
+"Retail_M_C","Proper","Coastal","Small",1
+"Retail_S_C","Proper","Coastal","Small",6
+"Transp_M_C","Proper","Coastal","Small",2
+"Missin_M_I","Proper","Inland","Medium/Large",8
+"Proper_M_C","Proper","Inland","Medium/Large",1
+"Proper_M_I","Proper","Inland","Medium/Large",162
+"Constr_A_I","Proper","Inland","Small",1
+"FullSe_M_I","Proper","Inland","Small",1
+"Govern_S_I","Proper","Inland","Small",1
+"Grocer_S_I","Proper","Inland","Small",2
+"Manufa_S_I","Proper","Inland","Small",1
+"Missin_M_I","Proper","Inland","Small",1
+"Missin_S_I","Proper","Inland","Small",7
+"Office_M_I","Proper","Inland","Small",3
+"Office_S_I","Proper","Inland","Small",1
+"Person_A_I","Proper","Inland","Small",1
+"Proper_M_I","Proper","Inland","Small",1
+"Proper_S_I","Proper","Inland","Small",146
+"Religi_A_I","Proper","Inland","Small",1
+"Retail_M_I","Proper","Inland","Small",1
+"Retail_S_I","Proper","Inland","Small",1
+"Wareho_S_I","Proper","Inland","Small",3
+"FullSe_M_N","Proper","North Central Valley","Medium/Large",1
+"Manufa_M_N","Proper","North Central Valley","Medium/Large",1
+"Missin_M_N","Proper","North Central Valley","Medium/Large",9
+"Proper_M_N","Proper","North Central Valley","Medium/Large",185
+"Proper_M_S","Proper","North Central Valley","Medium/Large",2
+"Transp_M_N","Proper","North Central Valley","Medium/Large",1
+"Wareho_M_N","Proper","North Central Valley","Medium/Large",1
+"Constr_A_N","Proper","North Central Valley","Small",5
+"GasSta_A_N","Proper","North Central Valley","Small",2
+"Govern_S_N","Proper","North Central Valley","Small",1
+"Health_S_N","Proper","North Central Valley","Small",2
+"Manufa_M_N","Proper","North Central Valley","Small",1
+"Manufa_S_N","Proper","North Central Valley","Small",2
+"Missin_M_N","Proper","North Central Valley","Small",1
+"Missin_M_S","Proper","North Central Valley","Small",1
+"Missin_S_N","Proper","North Central Valley","Small",7
+"Office_M_N","Proper","North Central Valley","Small",1
+"Person_A_N","Proper","North Central Valley","Small",4
+"Proper_M_N","Proper","North Central Valley","Small",5
+"Proper_S_I","Proper","North Central Valley","Small",1
+"Proper_S_N","Proper","North Central Valley","Small",190
+"Proper_S_S","Proper","North Central Valley","Small",7
+"Religi_A_N","Proper","North Central Valley","Small",1
+"Retail_S_N","Proper","North Central Valley","Small",1
+"Wareho_S_N","Proper","North Central Valley","Small",2
+"FullSe_S_S","Proper","South Central Valley","Medium/Large",1
+"Missin_M_S","Proper","South Central Valley","Medium/Large",6
+"Proper_M_S","Proper","South Central Valley","Medium/Large",187
+"Constr_A_S","Proper","South Central Valley","Small",2
+"Educat_S_S","Proper","South Central Valley","Small",1
+"FullSe_M_S","Proper","South Central Valley","Small",1
+"Grocer_S_S","Proper","South Central Valley","Small",1
+"Health_S_S","Proper","South Central Valley","Small",1
+"Lodgin_S_S","Proper","South Central Valley","Small",1
+"Missin_M_S","Proper","South Central Valley","Small",3
+"Missin_S_S","Proper","South Central Valley","Small",9
+"Office_S_S","Proper","South Central Valley","Small",2
+"Proper_M_S","Proper","South Central Valley","Small",7
+"Proper_S_N","Proper","South Central Valley","Small",3
+"Proper_S_S","Proper","South Central Valley","Small",185
+"Retail_S_S","Proper","South Central Valley","Small",2
+"Wareho_M_S","Proper","South Central Valley","Small",1
+"Religi_A_C","Religi","Coastal","All",191
+"Religi_A_I","Religi","Coastal","All",53
+"Religi_A_C","Religi","Inland","All",8
+"Religi_A_I","Religi","Inland","All",143
+"Religi_A_S","Religi","Inland","All",1
+"Religi_A_I","Religi","North Central Valley","All",1
+"Religi_A_N","Religi","North Central Valley","All",196
+"Religi_A_S","Religi","North Central Valley","All",4
+"Religi_A_N","Religi","South Central Valley","All",1
+"Religi_A_S","Religi","South Central Valley","All",194
+"GasSta_A_C","Retail","Coastal","Medium/Large",5
+"GasSta_A_I","Retail","Coastal","Medium/Large",3
+"Grocer_M_I","Retail","Coastal","Medium/Large",1
+"Missin_M_C","Retail","Coastal","Medium/Large",1
+"Missin_M_I","Retail","Coastal","Medium/Large",2
+"Retail_M_C","Retail","Coastal","Medium/Large",191
+"Retail_M_I","Retail","Coastal","Medium/Large",43
+"Wareho_M_I","Retail","Coastal","Medium/Large",1
+"Automo_M_I","Retail","Coastal","Small",1
+"Constr_A_C","Retail","Coastal","Small",1
+"GasSta_A_I","Retail","Coastal","Small",1
+"Missin_S_C","Retail","Coastal","Small",1
+"Missin_S_I","Retail","Coastal","Small",1
+"Proper_S_C","Retail","Coastal","Small",1
+"Retail_M_C","Retail","Coastal","Small",5
+"Retail_M_I","Retail","Coastal","Small",1
+"Retail_S_C","Retail","Coastal","Small",189
+"Retail_S_I","Retail","Coastal","Small",36
+"Wareho_S_I","Retail","Coastal","Small",1
+"Automo_M_I","Retail","Inland","Medium/Large",2
+"GasSta_A_C","Retail","Inland","Medium/Large",1
+"GasSta_A_I","Retail","Inland","Medium/Large",1
+"Missin_M_I","Retail","Inland","Medium/Large",2
+"Office_M_I","Retail","Inland","Medium/Large",1
+"Retail_M_I","Retail","Inland","Medium/Large",145
+"GasSta_A_I","Retail","Inland","Small",1
+"Person_A_I","Retail","Inland","Small",1
+"Retail_M_I","Retail","Inland","Small",4
+"Retail_S_C","Retail","Inland","Small",1
+"Retail_S_I","Retail","Inland","Small",156
+"GasSta_A_N","Retail","North Central Valley","Medium/Large",2
+"Limite_M_I","Retail","North Central Valley","Medium/Large",1
+"Missin_M_N","Retail","North Central Valley","Medium/Large",7
+"Office_M_N","Retail","North Central Valley","Medium/Large",1
+"Retail_M_I","Retail","North Central Valley","Medium/Large",2
+"Retail_M_N","Retail","North Central Valley","Medium/Large",197
+"Retail_M_S","Retail","North Central Valley","Medium/Large",5
+"Retail_S_N","Retail","North Central Valley","Medium/Large",1
+"Wareho_M_N","Retail","North Central Valley","Medium/Large",1
+"Automo_M_N","Retail","North Central Valley","Small",1
+"Constr_A_N","Retail","North Central Valley","Small",1
+"GasSta_A_I","Retail","North Central Valley","Small",1
+"GasSta_A_N","Retail","North Central Valley","Small",1
+"Missin_S_N","Retail","North Central Valley","Small",3
+"Person_A_N","Retail","North Central Valley","Small",1
+"Retail_M_N","Retail","North Central Valley","Small",2
+"Retail_S_I","Retail","North Central Valley","Small",2
+"Retail_S_N","Retail","North Central Valley","Small",189
+"Retail_S_S","Retail","North Central Valley","Small",4
+"Grocer_M_S","Retail","South Central Valley","Medium/Large",1
+"Missin_M_S","Retail","South Central Valley","Medium/Large",1
+"Proper_M_S","Retail","South Central Valley","Medium/Large",1
+"Retail_M_S","Retail","South Central Valley","Medium/Large",190
+"GasSta_A_S","Retail","South Central Valley","Small",2
+"Missin_S_S","Retail","South Central Valley","Small",3
+"Proper_S_S","Retail","South Central Valley","Small",1
+"Retail_M_S","Retail","South Central Valley","Small",2
+"Retail_S_N","Retail","South Central Valley","Small",2
+"Retail_S_S","Retail","South Central Valley","Small",186
+"Wareho_S_S","Retail","South Central Valley","Small",1
+"Lodgin_M_C","Transp","Coastal","Medium/Large",1
+"Proper_M_I","Transp","Coastal","Medium/Large",1
+"Transp_M_C","Transp","Coastal","Medium/Large",190
+"Transp_M_I","Transp","Coastal","Medium/Large",45
+"Wareho_M_C","Transp","Coastal","Medium/Large",1
+"Wareho_M_I","Transp","Coastal","Medium/Large",1
+"Agricu_A_C","Transp","Coastal","Small",1
+"Missin_M_I","Transp","Coastal","Small",1
+"Missin_S_C","Transp","Coastal","Small",1
+"Missin_S_I","Transp","Coastal","Small",2
+"Proper_S_I","Transp","Coastal","Small",1
+"Retail_S_I","Transp","Coastal","Small",1
+"Transp_M_C","Transp","Coastal","Small",1
+"Transp_M_I","Transp","Coastal","Small",1
+"Transp_S_C","Transp","Coastal","Small",196
+"Transp_S_I","Transp","Coastal","Small",32
+"Missin_M_I","Transp","Inland","Medium/Large",1
+"Transp_M_C","Transp","Inland","Medium/Large",2
+"Transp_M_I","Transp","Inland","Medium/Large",149
+"Missin_S_I","Transp","Inland","Small",1
+"Transp_S_C","Transp","Inland","Small",1
+"Transp_S_I","Transp","Inland","Small",160
+"Lodgin_M_N","Transp","North Central Valley","Medium/Large",1
+"Missin_M_N","Transp","North Central Valley","Medium/Large",3
+"Transp_M_I","Transp","North Central Valley","Medium/Large",2
+"Transp_M_N","Transp","North Central Valley","Medium/Large",196
+"Transp_M_S","Transp","North Central Valley","Medium/Large",7
+"Agricu_A_N","Transp","North Central Valley","Small",1
+"Constr_A_N","Transp","North Central Valley","Small",1
+"Missin_M_S","Transp","North Central Valley","Small",1
+"Missin_S_N","Transp","North Central Valley","Small",2
+"Transp_M_N","Transp","North Central Valley","Small",1
+"Transp_S_I","Transp","North Central Valley","Small",7
+"Transp_S_N","Transp","North Central Valley","Small",195
+"Transp_S_S","Transp","North Central Valley","Small",6
+"Missin_M_S","Transp","South Central Valley","Medium/Large",3
+"Transp_M_S","Transp","South Central Valley","Medium/Large",188
+"Transp_S_S","Transp","South Central Valley","Medium/Large",1
+"GasSta_A_S","Transp","South Central Valley","Small",1
+"Manufa_M_S","Transp","South Central Valley","Small",1
+"Missin_S_S","Transp","South Central Valley","Small",1
+"Transp_M_S","Transp","South Central Valley","Small",5
+"Transp_S_N","Transp","South Central Valley","Small",3
+"Transp_S_S","Transp","South Central Valley","Small",191
+"Grocer_M_I","Wareho","Coastal","Medium/Large",1
+"Missin_M_C","Wareho","Coastal","Medium/Large",1
+"Wareho_M_C","Wareho","Coastal","Medium/Large",189
+"Wareho_M_I","Wareho","Coastal","Medium/Large",78
+"Agricu_A_C","Wareho","Coastal","Small",1
+"Constr_A_C","Wareho","Coastal","Small",1
+"Constr_A_I","Wareho","Coastal","Small",1
+"Grocer_S_C","Wareho","Coastal","Small",1
+"Manufa_M_C","Wareho","Coastal","Small",1
+"Missin_M_I","Wareho","Coastal","Small",2
+"Missin_S_C","Wareho","Coastal","Small",2
+"Proper_S_C","Wareho","Coastal","Small",1
+"Wareho_M_I","Wareho","Coastal","Small",2
+"Wareho_S_C","Wareho","Coastal","Small",191
+"Wareho_S_I","Wareho","Coastal","Small",36
+"Manufa_S_I","Wareho","Inland","Medium/Large",1
+"Missin_M_I","Wareho","Inland","Medium/Large",3
+"Wareho_M_C","Wareho","Inland","Medium/Large",2
+"Wareho_M_I","Wareho","Inland","Medium/Large",103
+"Agricu_A_I","Wareho","Inland","Small",1
+"Constr_A_I","Wareho","Inland","Small",1
+"Missin_S_I","Wareho","Inland","Small",1
+"Wareho_M_I","Wareho","Inland","Small",3
+"Wareho_S_C","Wareho","Inland","Small",3
+"Wareho_S_I","Wareho","Inland","Small",143
+"Missin_M_N","Wareho","North Central Valley","Medium/Large",2
+"Proper_M_N","Wareho","North Central Valley","Medium/Large",2
+"Wareho_M_I","Wareho","North Central Valley","Medium/Large",5
+"Wareho_M_N","Wareho","North Central Valley","Medium/Large",194
+"Wareho_M_S","Wareho","North Central Valley","Medium/Large",3
+"Wareho_S_N","Wareho","North Central Valley","Medium/Large",1
+"Agricu_A_N","Wareho","North Central Valley","Small",1
+"Constr_A_N","Wareho","North Central Valley","Small",1
+"Govern_S_N","Wareho","North Central Valley","Small",1
+"Health_S_N","Wareho","North Central Valley","Small",1
+"Manufa_M_N","Wareho","North Central Valley","Small",1
+"Manufa_S_N","Wareho","North Central Valley","Small",1
+"Missin_S_N","Wareho","North Central Valley","Small",1
+"Office_M_N","Wareho","North Central Valley","Small",1
+"Wareho_S_I","Wareho","North Central Valley","Small",8
+"Wareho_S_N","Wareho","North Central Valley","Small",187
+"Wareho_S_S","Wareho","North Central Valley","Small",3
+"Missin_M_S","Wareho","South Central Valley","Medium/Large",4
+"Office_M_S","Wareho","South Central Valley","Medium/Large",1
+"Wareho_M_S","Wareho","South Central Valley","Medium/Large",192
+"Constr_A_S","Wareho","South Central Valley","Small",1
+"Grocer_M_S","Wareho","South Central Valley","Small",1
+"Missin_M_S","Wareho","South Central Valley","Small",1
+"Missin_S_S","Wareho","South Central Valley","Small",3
+"Proper_S_S","Wareho","South Central Valley","Small",1
+"Wareho_S_N","Wareho","South Central Valley","Small",1
+"Wareho_S_S","Wareho","South Central Valley","Small",192

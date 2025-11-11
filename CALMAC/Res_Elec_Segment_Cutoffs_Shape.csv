@@ -1,0 +1,161 @@
+seg_cz,seg_solar,seg_size,seg_shape,shape_min,shape_max,cutoff_unit
+Coastal,NS,1,1,,.10416465,% of Daily Consumption 1pm-4pm
+Coastal,NS,1,2,.10417465,.1216165,% of Daily Consumption 1pm-4pm
+Coastal,NS,1,3,.1216265,.13639341,% of Daily Consumption 1pm-4pm
+Coastal,NS,1,4,.13640341,,% of Daily Consumption 1pm-4pm
+Coastal,NS,2,1,,.10754973,% of Daily Consumption 1pm-4pm
+Coastal,NS,2,2,.10755973,.12302698,% of Daily Consumption 1pm-4pm
+Coastal,NS,2,3,.12303698,.13814023,% of Daily Consumption 1pm-4pm
+Coastal,NS,2,4,.13815023,,% of Daily Consumption 1pm-4pm
+Coastal,NS,3,1,,.10965738,% of Daily Consumption 1pm-4pm
+Coastal,NS,3,2,.10966738,.12344304,% of Daily Consumption 1pm-4pm
+Coastal,NS,3,3,.12345304,.13725868,% of Daily Consumption 1pm-4pm
+Coastal,NS,3,4,.13726868,,% of Daily Consumption 1pm-4pm
+Coastal,NS,4,1,,.10803454,% of Daily Consumption 1pm-4pm
+Coastal,NS,4,2,.10804453,.12208369,% of Daily Consumption 1pm-4pm
+Coastal,NS,4,3,.12209368,.13804464,% of Daily Consumption 1pm-4pm
+Coastal,NS,4,4,.13805464,,% of Daily Consumption 1pm-4pm
+Coastal,NS,5,1,,.10417346,% of Daily Consumption 1pm-4pm
+Coastal,NS,5,2,.10418346,.12201002,% of Daily Consumption 1pm-4pm
+Coastal,NS,5,3,.12202002,.14024849,% of Daily Consumption 1pm-4pm
+Coastal,NS,5,4,.14025849,,% of Daily Consumption 1pm-4pm
+Coastal,S,1,1,,-.3185896,% of Daily Consumption 1pm-4pm
+Coastal,S,1,2,-.31857958,.14425561,% of Daily Consumption 1pm-4pm
+Coastal,S,1,3,.14426561,.90486288,% of Daily Consumption 1pm-4pm
+Coastal,S,1,4,.90487289,,% of Daily Consumption 1pm-4pm
+Coastal,S,2,1,,-.20660436,% of Daily Consumption 1pm-4pm
+Coastal,S,2,2,-.20659436,.46037605,% of Daily Consumption 1pm-4pm
+Coastal,S,2,3,.46038607,1.011582,% of Daily Consumption 1pm-4pm
+Coastal,S,2,4,1.011592,,% of Daily Consumption 1pm-4pm
+Coastal,S,3,1,,-.271943,% of Daily Consumption 1pm-4pm
+Coastal,S,3,2,-.27193299,.38597104,% of Daily Consumption 1pm-4pm
+Coastal,S,3,3,.38598105,.99613804,% of Daily Consumption 1pm-4pm
+Coastal,S,3,4,.99614805,,% of Daily Consumption 1pm-4pm
+Coastal,S,4,1,,-.19414556,% of Daily Consumption 1pm-4pm
+Coastal,S,4,2,-.19413556,.41274005,% of Daily Consumption 1pm-4pm
+Coastal,S,4,3,.41275007,.90185177,% of Daily Consumption 1pm-4pm
+Coastal,S,4,4,.90186179,,% of Daily Consumption 1pm-4pm
+Coastal,S,5,1,,-.2366191,% of Daily Consumption 1pm-4pm
+Coastal,S,5,2,-.2366091,.22719808,% of Daily Consumption 1pm-4pm
+Coastal,S,5,3,.22720808,.83723176,% of Daily Consumption 1pm-4pm
+Coastal,S,5,4,.83724177,,% of Daily Consumption 1pm-4pm
+Inland,NS,1,1,,.10012448,% of Daily Consumption 1pm-4pm
+Inland,NS,1,2,.10013448,.12064645,% of Daily Consumption 1pm-4pm
+Inland,NS,1,3,.12065645,.13997464,% of Daily Consumption 1pm-4pm
+Inland,NS,1,4,.13998464,,% of Daily Consumption 1pm-4pm
+Inland,NS,2,1,,.1055989,% of Daily Consumption 1pm-4pm
+Inland,NS,2,2,.1056089,.1226536,% of Daily Consumption 1pm-4pm
+Inland,NS,2,3,.1226636,.14360131,% of Daily Consumption 1pm-4pm
+Inland,NS,2,4,.14361131,,% of Daily Consumption 1pm-4pm
+Inland,NS,3,1,,.1069992,% of Daily Consumption 1pm-4pm
+Inland,NS,3,2,.1070092,.12423842,% of Daily Consumption 1pm-4pm
+Inland,NS,3,3,.12424842,.14269419,% of Daily Consumption 1pm-4pm
+Inland,NS,3,4,.14270419,,% of Daily Consumption 1pm-4pm
+Inland,NS,4,1,,.10942441,% of Daily Consumption 1pm-4pm
+Inland,NS,4,2,.10943441,.12718517,% of Daily Consumption 1pm-4pm
+Inland,NS,4,3,.12719516,.15031414,% of Daily Consumption 1pm-4pm
+Inland,NS,4,4,.15032414,,% of Daily Consumption 1pm-4pm
+Inland,NS,5,1,,.10052348,% of Daily Consumption 1pm-4pm
+Inland,NS,5,2,.10053348,.12140995,% of Daily Consumption 1pm-4pm
+Inland,NS,5,3,.12141995,.14476462,% of Daily Consumption 1pm-4pm
+Inland,NS,5,4,.14477462,,% of Daily Consumption 1pm-4pm
+Inland,S,1,1,,-.27023584,% of Daily Consumption 1pm-4pm
+Inland,S,1,2,-.27022582,.13750087,% of Daily Consumption 1pm-4pm
+Inland,S,1,3,.13751087,.79658884,% of Daily Consumption 1pm-4pm
+Inland,S,1,4,.79659885,,% of Daily Consumption 1pm-4pm
+Inland,S,2,1,,-.29653832,% of Daily Consumption 1pm-4pm
+Inland,S,2,2,-.29652831,.36208418,% of Daily Consumption 1pm-4pm
+Inland,S,2,3,.36209419,.97292906,% of Daily Consumption 1pm-4pm
+Inland,S,2,4,.97293907,,% of Daily Consumption 1pm-4pm
+Inland,S,3,1,,-.1465371,% of Daily Consumption 1pm-4pm
+Inland,S,3,2,-.1465271,.41817206,% of Daily Consumption 1pm-4pm
+Inland,S,3,3,.41818208,.87736058,% of Daily Consumption 1pm-4pm
+Inland,S,3,4,.8773706,,% of Daily Consumption 1pm-4pm
+Inland,S,4,1,,-.11059577,% of Daily Consumption 1pm-4pm
+Inland,S,4,2,-.11058577,.41703984,% of Daily Consumption 1pm-4pm
+Inland,S,4,3,.41704985,.86258954,% of Daily Consumption 1pm-4pm
+Inland,S,4,4,.86259955,,% of Daily Consumption 1pm-4pm
+Inland,S,5,1,,-.18338448,% of Daily Consumption 1pm-4pm
+Inland,S,5,2,-.18337448,.22639498,% of Daily Consumption 1pm-4pm
+Inland,S,5,3,.22640498,.75624102,% of Daily Consumption 1pm-4pm
+Inland,S,5,4,.75625104,,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,1,1,,.10226445,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,1,2,.10227445,.12083447,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,1,3,.12084447,.13983768,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,1,4,.13984768,,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,2,1,,.10774741,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,2,2,.1077574,.12461518,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,2,3,.12462518,.14490277,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,2,4,.14491276,,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,3,1,,.1085007,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,3,2,.1085107,.12658963,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,3,3,.12659962,.14892589,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,3,4,.14893588,,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,4,1,,.11033566,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,4,2,.11034566,.12854525,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,4,3,.12855525,.15232517,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,4,4,.15233517,,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,5,1,,.10221449,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,5,2,.10222448,.12114736,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,5,3,.12115736,.14053343,% of Daily Consumption 1pm-4pm
+North Central Valley,NS,5,4,.14054343,,% of Daily Consumption 1pm-4pm
+North Central Valley,S,1,1,,-.14526068,% of Daily Consumption 1pm-4pm
+North Central Valley,S,1,2,-.14525068,.3583014,% of Daily Consumption 1pm-4pm
+North Central Valley,S,1,3,.35831141,.7899881,% of Daily Consumption 1pm-4pm
+North Central Valley,S,1,4,.78999811,,% of Daily Consumption 1pm-4pm
+North Central Valley,S,2,1,,-.046146493,% of Daily Consumption 1pm-4pm
+North Central Valley,S,2,2,-.046136495,.50289738,% of Daily Consumption 1pm-4pm
+North Central Valley,S,2,3,.5029074,.89565957,% of Daily Consumption 1pm-4pm
+North Central Valley,S,2,4,.89566958,,% of Daily Consumption 1pm-4pm
+North Central Valley,S,3,1,,.033443339,% of Daily Consumption 1pm-4pm
+North Central Valley,S,3,2,.033453338,.51295418,% of Daily Consumption 1pm-4pm
+North Central Valley,S,3,3,.51296419,.95773774,% of Daily Consumption 1pm-4pm
+North Central Valley,S,3,4,.95774776,,% of Daily Consumption 1pm-4pm
+North Central Valley,S,4,1,,.014790304,% of Daily Consumption 1pm-4pm
+North Central Valley,S,4,2,.014800304,.48298115,% of Daily Consumption 1pm-4pm
+North Central Valley,S,4,3,.48299116,.84829301,% of Daily Consumption 1pm-4pm
+North Central Valley,S,4,4,.84830302,,% of Daily Consumption 1pm-4pm
+North Central Valley,S,5,1,,-.024102518,% of Daily Consumption 1pm-4pm
+North Central Valley,S,5,2,-.024092518,.45614144,% of Daily Consumption 1pm-4pm
+North Central Valley,S,5,3,.45615146,.87016475,% of Daily Consumption 1pm-4pm
+North Central Valley,S,5,4,.87017477,,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,1,1,,.099045627,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,1,2,.099055625,.12057336,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,1,3,.12058336,.14319204,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,1,4,.14320204,,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,2,1,,.10751813,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,2,2,.10752813,.12735786,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,2,3,.12736785,.1539389,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,2,4,.1539489,,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,3,1,,.11198811,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,3,2,.11199811,.13174646,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,3,3,.13175645,.15621477,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,3,4,.15622477,,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,4,1,,.11204096,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,4,2,.11205096,.13219312,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,4,3,.13220312,.15882382,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,4,4,.15883382,,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,5,1,,.10301439,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,5,2,.10302439,.12487563,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,5,3,.12488563,.15241668,% of Daily Consumption 1pm-4pm
+South Central Valley,NS,5,4,.15242667,,% of Daily Consumption 1pm-4pm
+South Central Valley,S,1,1,,-.22119978,% of Daily Consumption 1pm-4pm
+South Central Valley,S,1,2,-.22118978,.33002096,% of Daily Consumption 1pm-4pm
+South Central Valley,S,1,3,.33003098,.74613559,% of Daily Consumption 1pm-4pm
+South Central Valley,S,1,4,.74614561,,% of Daily Consumption 1pm-4pm
+South Central Valley,S,2,1,,.076322809,% of Daily Consumption 1pm-4pm
+South Central Valley,S,2,2,.076332808,.5432148,% of Daily Consumption 1pm-4pm
+South Central Valley,S,2,3,.54322481,.88592565,% of Daily Consumption 1pm-4pm
+South Central Valley,S,2,4,.88593566,,% of Daily Consumption 1pm-4pm
+South Central Valley,S,3,1,,.13758133,% of Daily Consumption 1pm-4pm
+South Central Valley,S,3,2,.13759133,.56132287,% of Daily Consumption 1pm-4pm
+South Central Valley,S,3,3,.56133288,.92359233,% of Daily Consumption 1pm-4pm
+South Central Valley,S,3,4,.92360234,,% of Daily Consumption 1pm-4pm
+South Central Valley,S,4,1,,.12580036,% of Daily Consumption 1pm-4pm
+South Central Valley,S,4,2,.12581035,.56536877,% of Daily Consumption 1pm-4pm
+South Central Valley,S,4,3,.56537879,.89142561,% of Daily Consumption 1pm-4pm
+South Central Valley,S,4,4,.89143562,,% of Daily Consumption 1pm-4pm
+South Central Valley,S,5,1,,-.038981292,% of Daily Consumption 1pm-4pm
+South Central Valley,S,5,2,-.038971294,.50967014,% of Daily Consumption 1pm-4pm
+South Central Valley,S,5,3,.50968015,.83659554,% of Daily Consumption 1pm-4pm
+South Central Valley,S,5,4,.83660555,,% of Daily Consumption 1pm-4pm

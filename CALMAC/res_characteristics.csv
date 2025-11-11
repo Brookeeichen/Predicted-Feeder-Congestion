@@ -1,0 +1,161 @@
+gp,seg_cz,seg_solar,seg_size,seg_shape,prem_count
+"1_1_NS_C","Coastal","NS",1,1,250
+"2_1_NS_C","Coastal","NS",1,2,250
+"3_1_NS_C","Coastal","NS",1,3,250
+"4_1_NS_C","Coastal","NS",1,4,250
+"1_2_NS_C","Coastal","NS",2,1,250
+"2_2_NS_C","Coastal","NS",2,2,250
+"3_2_NS_C","Coastal","NS",2,3,250
+"4_2_NS_C","Coastal","NS",2,4,250
+"1_3_NS_C","Coastal","NS",3,1,250
+"2_3_NS_C","Coastal","NS",3,2,250
+"3_3_NS_C","Coastal","NS",3,3,250
+"4_3_NS_C","Coastal","NS",3,4,250
+"1_4_NS_C","Coastal","NS",4,1,250
+"2_4_NS_C","Coastal","NS",4,2,250
+"3_4_NS_C","Coastal","NS",4,3,250
+"4_4_NS_C","Coastal","NS",4,4,250
+"1_5_NS_C","Coastal","NS",5,1,250
+"2_5_NS_C","Coastal","NS",5,2,250
+"3_5_NS_C","Coastal","NS",5,3,250
+"4_5_NS_C","Coastal","NS",5,4,250
+"1_1_S_C","Coastal","S",1,1,250
+"2_1_S_C","Coastal","S",1,2,250
+"3_1_S_C","Coastal","S",1,3,250
+"4_1_S_C","Coastal","S",1,4,250
+"1_2_S_C","Coastal","S",2,1,250
+"2_2_S_C","Coastal","S",2,2,250
+"3_2_S_C","Coastal","S",2,3,250
+"4_2_S_C","Coastal","S",2,4,250
+"1_3_S_C","Coastal","S",3,1,250
+"2_3_S_C","Coastal","S",3,2,250
+"3_3_S_C","Coastal","S",3,3,250
+"4_3_S_C","Coastal","S",3,4,250
+"1_4_S_C","Coastal","S",4,1,250
+"2_4_S_C","Coastal","S",4,2,250
+"3_4_S_C","Coastal","S",4,3,250
+"4_4_S_C","Coastal","S",4,4,250
+"1_5_S_C","Coastal","S",5,1,250
+"2_5_S_C","Coastal","S",5,2,250
+"3_5_S_C","Coastal","S",5,3,250
+"4_5_S_C","Coastal","S",5,4,250
+"1_1_NS_I","Inland","NS",1,1,250
+"2_1_NS_I","Inland","NS",1,2,250
+"3_1_NS_I","Inland","NS",1,3,250
+"4_1_NS_I","Inland","NS",1,4,250
+"1_2_NS_I","Inland","NS",2,1,250
+"2_2_NS_I","Inland","NS",2,2,250
+"3_2_NS_I","Inland","NS",2,3,250
+"4_2_NS_I","Inland","NS",2,4,250
+"1_3_NS_I","Inland","NS",3,1,250
+"2_3_NS_I","Inland","NS",3,2,250
+"3_3_NS_I","Inland","NS",3,3,250
+"4_3_NS_I","Inland","NS",3,4,250
+"1_4_NS_I","Inland","NS",4,1,250
+"2_4_NS_I","Inland","NS",4,2,250
+"3_4_NS_I","Inland","NS",4,3,250
+"4_4_NS_I","Inland","NS",4,4,250
+"1_5_NS_I","Inland","NS",5,1,250
+"2_5_NS_I","Inland","NS",5,2,250
+"3_5_NS_I","Inland","NS",5,3,250
+"4_5_NS_I","Inland","NS",5,4,250
+"1_1_S_I","Inland","S",1,1,250
+"2_1_S_I","Inland","S",1,2,250
+"3_1_S_I","Inland","S",1,3,250
+"4_1_S_I","Inland","S",1,4,250
+"1_2_S_I","Inland","S",2,1,250
+"2_2_S_I","Inland","S",2,2,250
+"3_2_S_I","Inland","S",2,3,250
+"4_2_S_I","Inland","S",2,4,250
+"1_3_S_I","Inland","S",3,1,250
+"2_3_S_I","Inland","S",3,2,250
+"3_3_S_I","Inland","S",3,3,250
+"4_3_S_I","Inland","S",3,4,250
+"1_4_S_I","Inland","S",4,1,250
+"2_4_S_I","Inland","S",4,2,250
+"3_4_S_I","Inland","S",4,3,250
+"4_4_S_I","Inland","S",4,4,250
+"1_5_S_I","Inland","S",5,1,250
+"2_5_S_I","Inland","S",5,2,250
+"3_5_S_I","Inland","S",5,3,250
+"4_5_S_I","Inland","S",5,4,250
+"1_1_NS_N","North Central Valley","NS",1,1,250
+"2_1_NS_N","North Central Valley","NS",1,2,250
+"3_1_NS_N","North Central Valley","NS",1,3,250
+"4_1_NS_N","North Central Valley","NS",1,4,250
+"1_2_NS_N","North Central Valley","NS",2,1,250
+"2_2_NS_N","North Central Valley","NS",2,2,250
+"3_2_NS_N","North Central Valley","NS",2,3,250
+"4_2_NS_N","North Central Valley","NS",2,4,250
+"1_3_NS_N","North Central Valley","NS",3,1,250
+"2_3_NS_N","North Central Valley","NS",3,2,250
+"3_3_NS_N","North Central Valley","NS",3,3,250
+"4_3_NS_N","North Central Valley","NS",3,4,250
+"1_4_NS_N","North Central Valley","NS",4,1,250
+"2_4_NS_N","North Central Valley","NS",4,2,250
+"3_4_NS_N","North Central Valley","NS",4,3,250
+"4_4_NS_N","North Central Valley","NS",4,4,250
+"1_5_NS_N","North Central Valley","NS",5,1,250
+"2_5_NS_N","North Central Valley","NS",5,2,250
+"3_5_NS_N","North Central Valley","NS",5,3,250
+"4_5_NS_N","North Central Valley","NS",5,4,250
+"1_1_S_N","North Central Valley","S",1,1,250
+"2_1_S_N","North Central Valley","S",1,2,250
+"3_1_S_N","North Central Valley","S",1,3,250
+"4_1_S_N","North Central Valley","S",1,4,250
+"1_2_S_N","North Central Valley","S",2,1,250
+"2_2_S_N","North Central Valley","S",2,2,250
+"3_2_S_N","North Central Valley","S",2,3,250
+"4_2_S_N","North Central Valley","S",2,4,250
+"1_3_S_N","North Central Valley","S",3,1,250
+"2_3_S_N","North Central Valley","S",3,2,250
+"3_3_S_N","North Central Valley","S",3,3,250
+"4_3_S_N","North Central Valley","S",3,4,250
+"1_4_S_N","North Central Valley","S",4,1,250
+"2_4_S_N","North Central Valley","S",4,2,250
+"3_4_S_N","North Central Valley","S",4,3,250
+"4_4_S_N","North Central Valley","S",4,4,250
+"1_5_S_N","North Central Valley","S",5,1,250
+"2_5_S_N","North Central Valley","S",5,2,250
+"3_5_S_N","North Central Valley","S",5,3,250
+"4_5_S_N","North Central Valley","S",5,4,250
+"1_1_NS_S","South Central Valley","NS",1,1,250
+"2_1_NS_S","South Central Valley","NS",1,2,250
+"3_1_NS_S","South Central Valley","NS",1,3,250
+"4_1_NS_S","South Central Valley","NS",1,4,250
+"1_2_NS_S","South Central Valley","NS",2,1,250
+"2_2_NS_S","South Central Valley","NS",2,2,250
+"3_2_NS_S","South Central Valley","NS",2,3,250
+"4_2_NS_S","South Central Valley","NS",2,4,250
+"1_3_NS_S","South Central Valley","NS",3,1,250
+"2_3_NS_S","South Central Valley","NS",3,2,250
+"3_3_NS_S","South Central Valley","NS",3,3,250
+"4_3_NS_S","South Central Valley","NS",3,4,250
+"1_4_NS_S","South Central Valley","NS",4,1,250
+"2_4_NS_S","South Central Valley","NS",4,2,250
+"3_4_NS_S","South Central Valley","NS",4,3,250
+"4_4_NS_S","South Central Valley","NS",4,4,250
+"1_5_NS_S","South Central Valley","NS",5,1,250
+"2_5_NS_S","South Central Valley","NS",5,2,250
+"3_5_NS_S","South Central Valley","NS",5,3,250
+"4_5_NS_S","South Central Valley","NS",5,4,250
+"1_1_S_S","South Central Valley","S",1,1,250
+"2_1_S_S","South Central Valley","S",1,2,250
+"3_1_S_S","South Central Valley","S",1,3,250
+"4_1_S_S","South Central Valley","S",1,4,250
+"1_2_S_S","South Central Valley","S",2,1,250
+"2_2_S_S","South Central Valley","S",2,2,250
+"3_2_S_S","South Central Valley","S",2,3,250
+"4_2_S_S","South Central Valley","S",2,4,250
+"1_3_S_S","South Central Valley","S",3,1,250
+"2_3_S_S","South Central Valley","S",3,2,250
+"3_3_S_S","South Central Valley","S",3,3,250
+"4_3_S_S","South Central Valley","S",3,4,250
+"1_4_S_S","South Central Valley","S",4,1,250
+"2_4_S_S","South Central Valley","S",4,2,250
+"3_4_S_S","South Central Valley","S",4,3,250
+"4_4_S_S","South Central Valley","S",4,4,250
+"1_5_S_S","South Central Valley","S",5,1,250
+"2_5_S_S","South Central Valley","S",5,2,250
+"3_5_S_S","South Central Valley","S",5,3,250
+"4_5_S_S","South Central Valley","S",5,4,250
