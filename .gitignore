@@ -1,0 +1,6 @@
+Miniforge3-MacOSX-*.sh
+*.csv
+*.gpkg
+*.parquet
+__pycache__/
+*.pyc
