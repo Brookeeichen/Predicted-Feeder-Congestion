@@ -1,0 +1,129 @@
+MAIN FUNCTION CHANGES COMPARISON
+==================================
+
+ORIGINAL main() function (before load data integration):
+--------------------------------------------------------
+
+def main():
+    """Main data wrangling pipeline"""
+    print("Starting data wrangling process...")
+    
+    # Load data
+    climate_zones = load_climate_zones()
+    zips = load_zip_codes()
+    
+    # Process climate zones
+    climate_zones = map_climate_zones(climate_zones)
+    
+    # Process zip code mapping
+    zips_climate = process_zip_climate_mapping(zips, climate_zones)
+    
+    # Load and process CALMAC data
+    gps_all = load_calmac_characteristics()
+    gps_by_zone = group_by_climate_zone(gps_all)
+    
+    # Merge datasets
+    zips_final = merge_datasets(zips_climate, gps_by_zone)
+    
+    # Expand load shapes
+    zips_expanded = expand_load_shapes(zips_final)
+    
+    # Save results
+    save_results(zips_final, zips_expanded)  ← ONLY 2 parameters
+    
+    # Print summary information
+    print("\n=== Data Summary ===")
+    print(f"Climate zones: {len(climate_zones)}")
+    print(f"Zip codes processed: {len(zips_climate)}")
+    print(f"Final merged records: {len(zips_final)}")
+    print(f"Expanded records (one per load shape): {len(zips_expanded)}")
+    
+    print("Data wrangling completed successfully!")
+    
+    return zips_final, zips_expanded  ← ONLY 2 return values
+
+
+CURRENT main() function (with load data integration):
+----------------------------------------------------
+
+def main():
+    """Main data wrangling pipeline"""
+    print("Starting data wrangling process...")
+    
+    # Load data
+    climate_zones = load_climate_zones()
+    zips = load_zip_codes()
+    
+    # Process climate zones
+    climate_zones = map_climate_zones(climate_zones)
+    
+    # Process zip code mapping
+    zips_climate = process_zip_climate_mapping(zips, climate_zones)
+    
+    # Load and process CALMAC data
+    gps_all = load_calmac_characteristics()
+    gps_by_zone = group_by_climate_zone(gps_all)
+    
+    # Merge datasets
+    zips_final = merge_datasets(zips_climate, gps_by_zone)
+    
+    # Expand load shapes
+    zips_expanded = expand_load_shapes(zips_final)
+    
+    # Load and merge load data  ← NEW SECTION
+    zips_with_loads = load_and_merge_load_data(zips_expanded)
+    
+    # Save results
+    save_results(zips_final, zips_expanded, zips_with_loads)  ← 3 parameters
+    
+    # Print summary information
+    print("\n=== Data Summary ===")
+    print(f"Climate zones: {len(climate_zones)}")
+    print(f"Zip codes processed: {len(zips_climate)}")
+    print(f"Final merged records: {len(zips_final)}")
+    print(f"Expanded records (one per load shape): {len(zips_expanded)}")
+    
+    print("Data wrangling completed successfully!")
+    
+    return zips_final, zips_expanded  ← Still 2 return values
+
+
+KEY DIFFERENCES HIGHLIGHTED:
+===========================
+
+1. NEW LOAD DATA SECTION (lines 157-158):
+   # Load and merge load data
+   zips_with_loads = load_and_merge_load_data(zips_expanded)
+   
+   This calls the function that:
+   - Loads Res_GP_Elec_2024.csv 
+   - Merges hourly data with zips_expanded
+   - Creates the final zips_with_loads dataset
+
+2. UPDATED save_results CALL (line 161):
+   OLD: save_results(zips_final, zips_expanded)
+   NEW: save_results(zips_final, zips_expanded, zips_with_loads)
+   
+   This passes the merged load data to be saved as CSV
+
+3. MODIFIED save_results FUNCTION (lines 108-131):
+   OLD: def save_results(zips_final, zips_expanded):
+   NEW: def save_results(zips_final, zips_expanded, zips_with_loads=None):
+   
+   Added optional parameter and conditional saving:
+   if zips_with_loads is not None:
+       zips_with_loads.to_csv("zip_codes/zips_with_loads.csv", index=False)
+       print("Load data merged and saved!")
+
+4. NEW IMPORT STATEMENT (line 12):
+   from load_data_loader import load_calmac_load_shapes, merge_load_data
+   
+   This imports the functions needed for load data processing
+
+SUMMARY OF CHANGES:
+==================
+- Added 2 new lines in main() for load data processing
+- Modified save_results() function signature and implementation  
+- Added import statement for load data functions
+- Total: 4 lines changed/added in main() function
+- Plus supporting functions in load_data_loader.py module

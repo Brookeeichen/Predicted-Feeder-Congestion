@@ -1,0 +1,86 @@
+GIT CMD COMMANDS FOR PUSHING BRANCH
+====================================
+
+Type these commands in the Git CMD window that just opened:
+
+1. NAVIGATE TO PROJECT DIRECTORY:
+   cd C:\Users\PHealy\CascadeProjects\windsurf-project\Predicted-Feeder-Congestion
+
+2. CHECK CURRENT STATUS:
+   git status
+
+3. ADD ALL FILES:
+   git add .
+
+4. COMMIT CHANGES:
+   git commit -m "Add CALMAC load data integration and merge functionality
+
+- Updated data_wrangling.py with load data integration
+- Added load_data_loader.py for hourly load processing  
+- Created exploration and demonstration scripts
+- Added comprehensive documentation
+- Integrated Res_GP_Elec_2024.csv merge pipeline"
+
+5. CHECK BRANCH:
+   git branch
+
+6. PUSH TO GITHUB:
+   git push origin Merge-CALMAC-Load-Shape
+
+7. VERIFY PUSH:
+   git status
+
+IF YOU SEE AUTHENTICATION ERRORS:
+=================================
+
+For HTTPS authentication:
+- Username: Your GitHub username
+- Password: Personal Access Token (NOT your GitHub password)
+
+To get Personal Access Token:
+1. Go to GitHub.com → Settings → Developer settings → Personal access tokens → Tokens (classic)
+2. Click "Generate new token" → "Generate new token (classic)"
+3. Select scopes: Check "repo" (full control of private repositories)
+4. Click "Generate token"
+5. Copy the token (you won't see it again)
+6. Use this token as your password when Git prompts
+
+EXPECTED SUCCESS OUTPUT:
+=======================
+
+You should see something like:
+Enumerating objects: 15, done.
+Counting objects: 100% (15/15), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (13/13), done.
+Writing objects: 100% (14/14), 12.34 KiB | 2.46 MiB/s, done.
+Total 14 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), done.
+To https://github.com/Brookeeichen/Predicted-Feeder-Congestion.git
+ * [new branch]      Merge-CALMAC-Load-Shape -> Merge-CALMAC-Load-Shape
+
+TROUBLESHOOTING:
+===============
+
+If push fails with "remote: Repository not found":
+- Check if you have access to the repository
+- Verify the repository URL is correct
+
+If push fails with "authentication failed":
+- Generate a new Personal Access Token
+- Make sure token has 'repo' permissions
+
+If push fails with "remote: Permission denied":
+- You may not have write access to this repository
+- Contact repository owner for permissions
+
+AFTER SUCCESSFUL PUSH:
+=====================
+
+Your branch is now on GitHub!
+View it at: https://github.com/Brookeeichen/Predicted-Feeder-Congestion/tree/Merge-CALMAC-Load-Shape
+
+You can now:
+- Create a Pull Request to merge to main
+- Share the branch link with collaborators
+- Continue working on this branch

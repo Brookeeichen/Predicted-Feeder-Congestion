@@ -1,0 +1,74 @@
+GIT BASH COMMANDS FOR PUSHING BRANCH
+=====================================
+
+Run these commands in Git Bash after it opens:
+
+1. NAVIGATE TO PROJECT DIRECTORY:
+   cd /c/Users/PHealy/CascadeProjects/windsurf-project/Predicted-Feeder-Congestion
+
+2. CHECK CURRENT STATUS:
+   git status
+
+3. ADD ALL FILES:
+   git add .
+
+4. COMMIT CHANGES:
+   git commit -m "Add CALMAC load data integration and merge functionality
+
+- Updated data_wrangling.py with load data integration
+- Added load_data_loader.py for hourly load processing
+- Created exploration and demonstration scripts
+- Added comprehensive documentation
+- Integrated Res_GP_Elec_2024.csv merge pipeline"
+
+5. CHECK BRANCH:
+   git branch
+
+6. PUSH TO GITHUB:
+   git push origin Merge-CALMAC-Load-Shape
+
+7. VERIFY PUSH:
+   git status
+
+IF AUTHENTICATION ISSUES:
+========================
+
+If asked for username/password:
+- Username: Your GitHub username
+- Password: Your Personal Access Token (NOT your GitHub password)
+
+To create Personal Access Token:
+1. Go to GitHub.com → Settings → Developer settings → Personal access tokens
+2. Generate new token with 'repo' permissions
+3. Copy the token and use it as password
+
+ALTERNATIVE - SET UP SSH:
+========================
+
+If you prefer SSH authentication:
+1. Check if remote is HTTPS: git remote -v
+2. If HTTPS, switch to SSH: git remote set-url origin git@github.com:Brookeeichen/Predicted-Feeder-Congestion.git
+3. Generate SSH key: ssh-keygen -t ed25519 -C "your_email@example.com"
+4. Add to GitHub: Copy ~/.ssh/id_ed25519.pub to GitHub SSH keys
+5. Test: ssh -T git@github.com
+6. Push: git push origin Merge-CALMAC-Load-Shape
+
+SUCCESS INDICATORS:
+==================
+
+You should see output like:
+- "Enumerating objects: X, done."
+- "Counting objects: X, done."
+- "Writing objects: X% (X/X), X bytes | X MiB/s, done."
+- "Total X (delta 0), reused 0 (delta 0), pack-reused 0"
+- "To https://github.com/Brookeeichen/Predicted-Feeder-Congestion.git"
+- " * [new branch]      Merge-CALMAC-Load-Shape -> Merge-CALMAC-Load-Shape"
+
+AFTER SUCCESSFUL PUSH:
+=====================
+
+Your branch is now on GitHub!
+You can:
+- View it at: https://github.com/Brookeeichen/Predicted-Feeder-Congestion/tree/Merge-CALMAC-Load-Shape
+- Create a Pull Request if you want to merge to main
+- Continue working on this branch locally
