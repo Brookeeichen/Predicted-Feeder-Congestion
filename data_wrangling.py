@@ -108,31 +108,44 @@ def expand_load_shapes(zips_final):
     return zips_expanded
 
 def load_and_merge_load_data(zips_expanded):
-    """Load CALMAC load data and merge with expanded ZIP data"""
+    """Load CALMAC load data, aggregate to month-hour per gp, filter to may-october and merge with expanded ZIP data
+    Result: one row per ZIP-gp-month-hour"""
     print("Loading CALMAC load shape data...")
     
     # Load the actual hourly load shape data from CALMAC CSV file
     # This contains gp, date, hour, kwh columns for all load profiles
     load_data = load_calmac_load_shapes()
-    
+
+    # ensure date is datetime
+    load_data["date"] = pd.to_datetime(load_data["date"])
+
+    # Filter to may-october
+    load_data = load_data[(load_data["date"].dt.month >= 5) & (load_data["date"].dt.month <= 10)].copy()
+    load_data["month"] = load_data["date"].dt.month
+    load_data = (
+        load_data.groupby(["gp", "month", "hour"], as_index=False).agg({"kwh": "mean"})
+    )
+    print(f"Aggregated rows: {len(load_data)}")
+
     # Merge the load data with expanded ZIP data using gp as the key
     # This creates the final dataset with hourly consumption for each ZIP
-    zips_with_loads = merge_load_data(zips_expanded, load_data)
+    zips_with_loads = zips_expanded.merge(load_data, on="gp",how="left")
+    print(f"Final ZIP-gp-month-hour rows: {len(zips_with_loads)}")
     
     return zips_with_loads
 
-def save_results(zips_final, zips_expanded, zips_with_loads=None):
-    """Save processed datasets"""
-    print("Saving results...")
+#def save_results(zips_final, zips_expanded, zips_with_loads=None):
+   # """Save processed datasets"""
+   # print("Saving results...")
     
     # Save the base datasets
-    zips_final.to_csv("zip_codes/zips_final.csv", index=False)
-    zips_expanded.to_csv("zip_codes/zips_expanded.csv", index=False)
+    #zips_final.to_csv("zip_codes/zips_final.csv", index=False)
+    #zips_expanded.to_csv("zip_codes/zips_expanded.csv", index=False)
     
     # Save the load data if it was merged (optional parameter)
-    if zips_with_loads is not None:
-        zips_with_loads.to_csv("zip_codes/zips_with_loads.csv", index=False)
-        print("Load data merged and saved!")  # Confirmation that load data processing completed
+    #if zips_with_loads is not None:
+       # zips_with_loads.to_csv("zip_codes/zips_with_loads.csv", index=False)
+       # print("Load data merged and saved!")  # Confirmation that load data processing completed
     
     print("Files saved successfully!")
 
@@ -187,3 +200,7 @@ def main():
 
 if __name__ == "__main__":
     zips_final, zips_expanded = main()
+    import pandas as pd
+    df = pd.read_csv("zip_codes/zips_with_loads.csv")
+    print("\nPreview of zips_with_loads.csv:")
+    print(df.head())
