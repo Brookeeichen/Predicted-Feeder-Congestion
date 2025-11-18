@@ -18,6 +18,7 @@ def load_calmac_load_shapes():
     load_data = pd.read_csv("CALMAC/Res_GP_Elec_2024.csv")
     return load_data
 
+
 #1. Load spatial data
 def load_climate_zones():
     """Load CEC building climate zones shapefile."""
@@ -246,6 +247,63 @@ def build_feeder_gp(zip_gp: pd.DataFrame, load_month_hour: pd.DataFrame, feeder_
           f"and {len(feeder_wide.columns)} columns")
     return feeder_wide
 
+def load_ev_data(ev_path: str = "EV_Pop_Growth_23_24.csv") -> pd.DataFrame:
+    """
+    Load EV adoption data and normalize ZIP code.
+
+    Expects a column 'Zip Code' in the CSV.
+    Returns a DataFrame with a standardized 'ZIP_CODE' column.
+    """
+    print("Loading EV data...")
+    ev = pd.read_csv(ev_path)
+
+    # Normalize ZIP codes to 5-char str
+    ev["Zip Code"] = (
+        ev["Zip Code"]
+        .astype(str)
+        .str.strip()
+        .str.zfill(5)
+    )
+
+    # Drop duplicate ZIPs 
+    ev_unique = ev.drop_duplicates(subset=["Zip Code"]).copy()
+
+    # Rename to match feeder_features
+    ev_unique = ev_unique.rename(columns={"Zip Code": "ZIP_CODE"})
+
+    print(f"Unique ZIPs in EV data: {ev_unique['ZIP_CODE'].nunique()}")
+    return ev_unique
+def attach_ev_to_feeders(feeder_features: pd.DataFrame, ev_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Merge ZIP-level EV data onto feeder_features (feeder × month × hour).
+
+    - feeder_features: must have 'ZIP_CODE'
+    - ev_df: must have 'ZIP_CODE' + EV columns
+
+    Result: same number of rows as feeder_features, with EV columns added.
+    """
+    print("Merging EV data onto feeder_features...")
+
+    # Normalize ZIP format in feeder_features 
+    ff = feeder_features.copy()
+    ff["ZIP_CODE"] = (
+        ff["ZIP_CODE"]
+        .astype(str)
+        .str.strip()
+        .str.zfill(5)
+    )
+
+    merged = ff.merge(
+        ev_df,
+        how="left",
+        on="ZIP_CODE",
+        suffixes=("", "_EV")  # EV side gets suffix if there are name conflicts
+    )
+
+    print(f"Rows before EV merge: {len(ff):,}")
+    print(f"Rows after EV merge:  {len(merged):,}")
+    return merged
+
 def main():
     # 1. Load  climate + ZIP
     climate_zones = load_climate_zones()
@@ -267,6 +325,9 @@ def main():
 
     # 5. Build feeder × month-hour × GP load matrix
     feeder_features = build_feeder_gp(zip_gp, load_month_hour, feeder_zip_map)
+    #6. Load EV data and merge onto feeder_features
+    ev_df = load_ev_data()
+    feeder_features = attach_ev_to_feeders(feeder_features, ev_df)
 
     
     feeder_features.to_csv("outputs/feeder_load_features.csv", index=False)
