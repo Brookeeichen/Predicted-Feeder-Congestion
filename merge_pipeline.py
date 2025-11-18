@@ -8,7 +8,15 @@
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
-from load_data_loader import load_calmac_load_shapes
+def load_calmac_load_shapes():
+    """
+    Load CALMAC hourly load shapes.
+
+    Expects a CSV with at least: gp, date, hour, kwh
+    """
+    print("Loading residential electric load shapes from CALMAC/Res_GP_Elec_2024.csv...")
+    load_data = pd.read_csv("CALMAC/Res_GP_Elec_2024.csv")
+    return load_data
 
 #1. Load spatial data
 def load_climate_zones():
@@ -34,9 +42,7 @@ def load_feeders():
       - a unique feeder ID column, e.g. 'feeder_id'
     """
     print("Loading feeders...")
-    feeders = gpd.read_file("feeders/pgande_feeders.shp")  # <-- UPDATE PATH
-    # Ensure there is a 'feeder_id' column; rename if necessary:
-    # feeders = feeders.rename(columns={"FEEDER_ID_COL_IN_SHAPE": "feeder_id"})
+    feeders = gpd.read_file("ica_data/FeederDetail_Voltage.shp")  
     return feeders
 
 # Map ZIP -> climate zone --> GP list
@@ -66,19 +72,17 @@ def process_zip_climate_mapping(zips: gpd.GeoDataFrame, climate_zones: gpd.GeoDa
     """
     print("Processing ZIP → climate group mapping...")
     zips = zips.to_crs(climate_zones.crs)
+    zips_centroids = zips.copy()
+    zips_centroids["geometry"] = zips_centroids.geometry.centroid
 
-    # Use centroids so each ZIP gets only one climate zone assignment
-    zips["centroid"] = zips.geometry.centroid
-    zips_centroids = zips.set_geometry("centroid")
-
-    zips_climate = gpd.sjoin(
+    joined = gpd.sjoin(
         zips_centroids,
         climate_zones[["cz_groups", "geometry"]],
         how="left",
         predicate="within"
     )
-
-    zips_climate = zips_climate[zips_climate["cz_groups"].notna()].copy()
+    zips["cz_groups"] = joined["cz_groups"]
+    zips_climate = zips[zips["cz_groups"].notna()].copy()
     return zips_climate  # has ZIP_CODE, geometry, cz_groups, etc.
 
 
@@ -98,8 +102,7 @@ def load_calmac_characteristics():
     return gps_all
 
 
-def zip_gp_lookup(zips_climate: gpd.GeoDataFrame,
-                        gps_all: pd.DataFrame) -> pd.DataFrame:
+def zip_gp_lookup(zips_climate: gpd.GeoDataFrame, gps_all: pd.DataFrame) -> pd.DataFrame:
     """
     Build a ZIP → GP lookup table no geometry.
 
@@ -132,7 +135,7 @@ def zip_gp_lookup(zips_climate: gpd.GeoDataFrame,
     print(f"ZIP–GP pairs: {len(zip_gp)}")
     return zip_gp  
 
-#3. Merge in Load Shapes gp x month x hour
+#3. Aggregate Load Shapes gp x month x hour
 def aggregate_load_shapes():
     print("Loading CALMAC load shapes...")
     load_data = load_calmac_load_shapes()
@@ -161,7 +164,7 @@ def aggregate_load_shapes():
 
 # 4. Map feeders to zips
 
-def feeder_zips_map(feeders: gpd.GeoDataFrame, zips: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+def feeder_zips_map(feeders: gpd.GeoDataFrame, zips_climate: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     """Map each feeder to a ZIP using a spatial join."""
     print("Mapping feeders to ZIPs...")
     print("Mapping feeders → ZIPs...")
@@ -170,6 +173,7 @@ def feeder_zips_map(feeders: gpd.GeoDataFrame, zips: gpd.GeoDataFrame) -> gpd.Ge
     feeders = feeders.to_crs(zips_climate.crs)
 
     # Use centroid for assignment
+    feeders = feeders.copy()
     feeders["centroid"] = feeders.geometry.centroid
     feeders_centroids = feeders.set_geometry("centroid")
 
@@ -179,132 +183,99 @@ def feeder_zips_map(feeders: gpd.GeoDataFrame, zips: gpd.GeoDataFrame) -> gpd.Ge
         how="left",
         predicate="within"
     )
-    feeder_zip_map = feeder_zip[["feeder_id", "ZIP_CODE"]].drop_duplicates()
+    feeder_zip = feeder_zip[["feederid", "ZIP_CODE"]].dropna(subset=["ZIP_CODE"])
+    #only one zip per feeder
+    feeder_zip_map = (
+        feeder_zip.drop_duplicates(subset=["feederid"]).reset_index(drop=True)
+    )
 
-    print(f"Feeder–ZIP pairs: {len(feeder_zip_map)}")
+    print(f"Unique feeders mapped: {feeder_zip_map['feederid'].nunique()}")
     return feeder_zip_map
 
 # 5. Pivot wide
-def build_feeder_load_features(zip_gp: pd.DataFrame, load_month_hour: pd.DataFrame, feeder_zip_map: pd.DataFrame) -> pd.DataFrame:
+def build_feeder_gp(zip_gp: pd.DataFrame, load_month_hour: pd.DataFrame, feeder_zip_map: pd.DataFrame) -> pd.DataFrame:
     """
-    Build feeder-level load features:
-
-    Steps:
-    - Restrict zip_gp to ZIPs that actually appear in feeder_zip_map
-    - Merge zip_gp with load_month_hour to get ZIP–GP–month–hour–kwh
-    - Merge with feeder_zip_map to attach feeders
-    - Group to feeder–GP–month–hour and sum kWh
-    - Pivot GP to columns: one row per feeder × month × hour
+    Build feeder-level load features. Final shape: one row per feederid, ZIP, month, hour)
     """
     print("Building feeder × month-hour load features...")
-
+    # keep only zips with feeders
     zips_for_feeders = feeder_zip_map["ZIP_CODE"].unique()
     zip_gp_sub = zip_gp[zip_gp["ZIP_CODE"].isin(zips_for_feeders)].copy()
 
-    # ZIP–GP–month–hour–kwh
-    zip_gp_month_hour = zip_gp_sub.merge(
+    # Join ZIP → feeder to get feeder–ZIP–GP
+    feeder_zip_gp = feeder_zip_map.merge(
+        zip_gp_sub,
+        on="ZIP_CODE",
+        how="left"
+    )
+    
+    # feeder-gp pairs
+    feeder_gp = (
+        feeder_zip_gp[["feederid", "gp"]].dropna(subset=["gp"]).drop_duplicates()
+    )
+    print(f"Feeder-GP pairs: {len(feeder_gp)}")
+
+    #join feeder-GP with loads
+    feeder_gp_month_hour = feeder_gp.merge(
         load_month_hour,
         on="gp",
         how="left"
     )
-
-    print(f"ZIP–GP–month-hour rows (subset): {len(zip_gp_month_hour)}")
-
-    # Attach feeder_id
-    zip_gp_month_hour = zip_gp_month_hour.merge(
-        feeder_zip_map,
-        on="ZIP_CODE",
-        how="left"
-    )
-
-    # Feeder–GP–month–hour: aggregate across ZIPs feeding the same feeder
-    feeder_gp_month_hour = (
-        zip_gp_month_hour
-        .groupby(["feeder_id", "month", "hour", "gp"], as_index=False)
-        .agg({"kwh": "sum"})
-    )
-
-    print(f"Feeder–GP–month-hour rows: {len(feeder_gp_month_hour)}")
-
-    # Pivot GP to wide columns
+    #pivot GP to columns: one row per feeder-month-hour
     feeder_wide = feeder_gp_month_hour.pivot_table(
-        index=["feeder_id", "month", "hour"],
+        index=["feederid", "month", "hour"],
         columns="gp",
         values="kwh",
-        aggfunc="sum",
+        aggfunc="mean",
         fill_value=0.0,
     ).reset_index()
 
-    # flatten column index after pivot
+    # flatten GP columns, rename kwh_gp
     feeder_wide.columns = [
-        f"kwh_{c}" if isinstance(c, str) and not c in {"feeder_id", "month", "hour"} else c
+        f"kwh_{c}" if isinstance(c, str) and not c in {"feederid", "month", "hour"} else c
         for c in feeder_wide.columns
     ]
+    #merge Zip_code back in
+    feeder_wide = feeder_wide.merge(
+        feeder_zip_map,
+        on="feederid",
+        how="left"
+    )
 
     print(f"Feeder-wide feature rows: {len(feeder_wide)} "
           f"and {len(feeder_wide.columns)} columns")
     return feeder_wide
 
-# 5. pivot wide
+def main():
+    # 1. Load  climate + ZIP
+    climate_zones = load_climate_zones()
+    climate_zones = map_climate_zones(climate_zones)
 
-def build_feeder_load_features(zip_gp: pd.DataFrame,
-                               load_month_hour: pd.DataFrame,
-                               feeder_zip_map: pd.DataFrame) -> pd.DataFrame:
-    """
-    Build feeder-level load features:
+    zips = load_zip_polygons()
+    zips_climate = process_zip_climate_mapping(zips, climate_zones)
 
-    Steps:
-    - Restrict zip_gp to ZIPs that actually appear in feeder_zip_map
-    - Merge zip_gp with load_month_hour to get ZIP–GP–month–hour–kwh
-    - Merge with feeder_zip_map to attach feeders
-    - Group to feeder–GP–month–hour and sum kWh
-    - Pivot GP to columns: one row per feeder × month × hour
-    """
-    print("Building feeder × month-hour load features...")
+    # 2. CALMAC GPs + ZIP to GP mapping
+    gps_all = load_calmac_characteristics()
+    zip_gp = zip_gp_lookup(zips_climate, gps_all)
 
-    zips_for_feeders = feeder_zip_map["ZIP_CODE"].unique()
-    zip_gp_sub = zip_gp[zip_gp["ZIP_CODE"].isin(zips_for_feeders)].copy()
+    # 3. Aggregate CALMAC load shapes to gp × month × hour (May–Oct)
+    load_month_hour = aggregate_load_shapes()
 
-    # ZIP–GP–month–hour–kwh
-    zip_gp_month_hour = zip_gp_sub.merge(
-        load_month_hour,
-        on="gp",
-        how="left"
-    )
+    # 4. Load feeders + map to ZIPs
+    feeders = load_feeders()
+    feeder_zip_map = feeder_zips_map(feeders, zips_climate)
 
-    print(f"ZIP–GP–month-hour rows (subset): {len(zip_gp_month_hour)}")
+    # 5. Build feeder × month-hour × GP load matrix
+    feeder_features = build_feeder_gp(zip_gp, load_month_hour, feeder_zip_map)
 
-    # Attach feeder_id
-    zip_gp_month_hour = zip_gp_month_hour.merge(
-        feeder_zip_map,
-        on="ZIP_CODE",
-        how="left"
-    )
+    
+    feeder_features.to_csv("outputs/feeder_load_features.csv", index=False)
+    print("Saved feeder_load_features.csv")
 
-    # Feeder–GP–month–hour: aggregate across ZIPs feeding the same feeder
-    feeder_gp_month_hour = (
-        zip_gp_month_hour
-        .groupby(["feeder_id", "month", "hour", "gp"], as_index=False)
-        .agg({"kwh": "sum"})
-    )
+    return feeder_features
 
-    print(f"Feeder–GP–month-hour rows: {len(feeder_gp_month_hour)}")
 
-    # Pivot GP to wide columns
-    feeder_wide = feeder_gp_month_hour.pivot_table(
-        index=["feeder_id", "month", "hour"],
-        columns="gp",
-        values="kwh",
-        aggfunc="sum",
-        fill_value=0.0,
-    ).reset_index()
+if __name__ == "__main__":
+    feeder_features = main()
 
-    # Optional: flatten column index after pivot
-    feeder_wide.columns = [
-        f"kwh_{c}" if isinstance(c, str) and not c in {"feeder_id", "month", "hour"} else c
-        for c in feeder_wide.columns
-    ]
-
-    print(f"Feeder-wide feature rows: {len(feeder_wide)} "
-          f"and {len(feeder_wide.columns)} columns")
-    return feeder_wide
+    
