@@ -1,6 +1,10 @@
 Miniforge3-MacOSX-*.sh
-*.csv
+#*.csv
 *.gpkg
 *.parquet
 __pycache__/
 *.pyc
+# Ignore huge generated outputs
+zip_codes/zips_final.csv
+zip_codes/zips_expanded.csv
+outputs/feeder_load_features.csv
