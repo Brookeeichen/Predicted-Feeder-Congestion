@@ -7,4 +7,5 @@ __pycache__/
 # Ignore huge generated outputs
 zip_codes/zips_final.csv
 zip_codes/zips_expanded.csv
+ica_data/raw_zips/
 outputs/feeder_load_features.csv
