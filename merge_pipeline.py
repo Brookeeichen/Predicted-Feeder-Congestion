@@ -7,7 +7,158 @@
 
 import pandas as pd
 import geopandas as gpd
-from shapely.geometry import Point
+import glob
+import os
+import zipfile
+from io import BytesIO
+
+def load_feeder_characteristics(path="ica_data/feeder_characteristics.csv"):
+    """
+    Load feeder-level data, including DER capacity, customer mix, etc. and drop unneeded columns.
+
+    """
+    print("Loading feeder characteristics...")
+
+    df = pd.read_csv(path)
+
+    df.columns = df.columns.str.strip().str.lower()
+
+    if "feederid" not in df.columns:
+        raise ValueError("feeder_characteristics must contain a 'Feeder ID' column.")
+    drop_cols = [
+        "feeder_name",
+        "substation name",
+        "division",
+        "last_update_on_map",
+        "publish",
+        "objectid",
+        "nominal_voltage_kV", #this would probably be a strong predictor, but removing it for the transferrability of our model
+        "redacted_data",
+        "shape__length",
+
+    ]
+    drop_cols = [c for c in drop_cols if c in df.columns]
+    df = df.drop(columns=drop_cols)
+
+    
+    df["feederid"] = (
+        df["feederid"]
+        .astype(str)
+        .str.strip()
+    )
+
+    return df
+
+def process_line_zips(
+    input_dir, loading_scenario, ica_col,
+):
+    """
+    Stream through PG&E division ZIPs and compute feeder-level
+    ICA data
+
+    Steps (per feeder ZIP inside each division ZIP):
+      - Read inner CSV into DF
+      - Filter to Loading_Scenario == 90
+      - Drop  Monthly_ICA_SG columns
+      - group by month-hour and gen/load
+      - Take min() of `ica_col` across line sections
+      - Store one row per feeder: feederid, Min_ICA_OF
+
+    Returns
+    -------
+    feeder_ica : pd.DataFrame
+        Columns: ['feederid', 'Min_ICA_OF']
+    """
+    records = []
+
+    division_zips = glob.glob(os.path.join(input_dir, "*.zip"))
+    if not division_zips: 
+        print(f"[ICA] No division ZIPs found in {input_dir}")
+        return pd.DataFrame(columns=["feederid", "month", "hour", "loadorgen", "min_ica_of"])
+
+    for div_zip_path in division_zips:
+        print(f"[ICA] Processing division zip: {os.path.basename(div_zip_path)}")
+        with zipfile.ZipFile(div_zip_path, "r") as div_zip:
+            for inner_name in div_zip.namelist():
+                # only process inner ZIPs 
+                if not inner_name.lower().endswith(".zip"):
+                    continue
+
+                # get feederid from inner ZIP name
+                feeder_id_raw = os.path.splitext(os.path.basename(inner_name))[0]
+                # Handle names like 'GICA_102530401' 
+                parts = feeder_id_raw.split("_")
+                if len(parts) > 1:
+                    # Take  part after  underscore
+                    feederid = parts[-1]
+                else:
+                    feederid = feeder_id_raw
+
+                try:
+                    inner_bytes = div_zip.read(inner_name)
+                except KeyError:
+                    print(f"[ICA] Warning: could not read {inner_name} in {div_zip_path}")
+                    continue
+
+                with zipfile.ZipFile(BytesIO(inner_bytes), "r") as feeder_zip:
+                    csv_members = [
+                        m for m in feeder_zip.namelist()
+                        if m.lower().endswith(".csv")
+                    ]
+                    if not csv_members:
+                        print(f"[ICA] Warning: no CSV in {inner_name}")
+                        continue
+
+                    csv_name = csv_members[0]
+                    with feeder_zip.open(csv_name) as src:
+                        df = pd.read_csv(src)
+
+                df.columns = df.columns.str.strip().str.lower()
+                if ica_col not in df.columns:
+                    print(f"[ICA] Warning: '{ica_col}' not found in {csv_name}; skipping this file")
+                    continue
+
+                required_group_cols = ["month", "hour", "loadorgen"]
+                missing = [c for c in required_group_cols if c not in df.columns]
+                if missing:
+                    print(f"[ICA] Warning: missing {missing} in {csv_name}; skipping this file")
+                    continue
+                
+                # filter by loading scenario
+                if "loading_scenario" in df.columns and loading_scenario is not None:
+                    df = df[df["loading_scenario"] == loading_scenario].copy()
+                if "monthly_ica_sg" in df.columns:
+                    df = df.drop(columns=["monthly_ica_sg"])
+                # attach feeder id
+                df["feederid"] = feederid
+                df[ica_col] = pd.to_numeric(df[ica_col], errors="coerce")
+                df = df.dropna(subset=[ica_col])
+                if df.empty:
+                    continue
+                group_cols = ["feederid", "month", "hour", "loadorgen"]
+
+                grouped = (
+                    df.groupby(group_cols, as_index=False)[ica_col]
+                    .min()
+                    .rename(columns={ica_col: "min_ica_of"})
+                )
+
+                records.append(grouped)
+
+    if not records:
+        raise ValueError("[ICA] No ICA values computed from division ZIPs.")
+
+    feeder_ica = pd.concat(records, ignore_index=True)
+    feeder_ica = (feeder_ica.groupby(["feederid", "month", "hour", "loadorgen"], as_index=False).agg({"min_ica_of": "min"}))
+
+    print(
+        f"[ICA] Computed feeder-level ICA for "
+        f"{feeder_ica['feederid'].nunique()} feeders "
+        f"across {feeder_ica['loadorgen'].unique().tolist()}."
+    )
+
+    return feeder_ica
+
 def load_calmac_load_shapes():
     """
     Load CALMAC hourly load shapes.
@@ -36,11 +187,6 @@ def load_zip_polygons():
 def load_feeders():
     """
     Load feeder shapefile.
-
-    TODO: update the path and column names to match your actual feeder data.
-    Assumes:
-      - geometry: LineString or MultiLineString
-      - a unique feeder ID column, e.g. 'feeder_id'
     """
     print("Loading feeders...")
     feeders = gpd.read_file("ica_data/FeederDetail_Voltage.shp")  
@@ -305,7 +451,7 @@ def attach_ev_to_feeders(feeder_features: pd.DataFrame, ev_df: pd.DataFrame) -> 
     return merged
 
 def main():
-    # 1. Load  climate + ZIP
+    # Load  climate + ZIP
     climate_zones = load_climate_zones()
     climate_zones = map_climate_zones(climate_zones)
 
@@ -329,14 +475,50 @@ def main():
     ev_df = load_ev_data()
     feeder_features = attach_ev_to_feeders(feeder_features, ev_df)
 
+    feeder_ica = process_line_zips(
+        input_dir="ica_data/raw_zips",
+        loading_scenario=90,
+        ica_col="hourly_ica_of",
+    )
+
+    # This will duplicate rows, one for load and one for gen
+    feeder_features = feeder_features.merge(
+        feeder_ica,
+        on=["feederid", "month", "hour"],
+        how="left",
+    )
     
+    # 7. Load feeder-level metadata and merge onto every feeder × month × hour row
+    feeder_chars = load_feeder_characteristics()
+
+    # Ensure feederid is a normalized string key on both sides before merging
+    feeder_features["feederid"] = (
+        feeder_features["feederid"].astype(str).str.strip()
+    )
+    feeder_chars["feederid"] = (
+        feeder_chars["feederid"].astype(str).str.strip()
+    )
+
+    feeder_features = feeder_features.merge(
+        feeder_chars,
+        on="feederid",
+        how="left"
+    )
+
+    # 8. Save final feature matrix
+    os.makedirs("outputs", exist_ok=True)
     feeder_features.to_csv("outputs/feeder_load_features.csv", index=False)
-    print("Saved feeder_load_features.csv")
+    print("Saved outputs/feeder_load_features.csv")
 
     return feeder_features
 
 
 if __name__ == "__main__":
     feeder_features = main()
+
+
+#the above pipeline keeps only generation rows, no load rows from the ICA data. This is not intentional, but load rows do not use the
+#hourly_ica_of column (all NAs). Therefore, those are dropped when we filter out non-numeric values. 
+#We can fix this later if we decide we want load rows.
 
     
