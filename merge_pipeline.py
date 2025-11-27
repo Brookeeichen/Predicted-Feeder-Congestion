@@ -291,7 +291,7 @@ def aggregate_load_shapes():
     load_data["date"] = pd.to_datetime(load_data["date"])
 
     # Filter to May–October
-    load_data = load_data[load_data["date"].dt.month.isin([5, 6, 7, 8, 9, 10])].copy()
+    #load_data = load_data[load_data["date"].dt.month.isin([5, 6, 7, 8, 9, 10])].copy()
     load_data["month"] = load_data["date"].dt.month
 
     # Aggregate to month-hour-gp
@@ -505,20 +505,51 @@ def main():
         how="left"
     )
 
-    # 8. Save final feature matrix
-    os.makedirs("outputs", exist_ok=True)
-    feeder_features.to_csv("outputs/feeder_load_features.csv", index=False)
-    print("Saved outputs/feeder_load_features.csv")
-
-    return feeder_features
-
-
-if __name__ == "__main__":
-    feeder_features = main()
+    
 
 
 #the above pipeline keeps only generation rows, no load rows from the ICA data. This is not intentional, but load rows do not use the
 #hourly_ica_of column (all NAs). Therefore, those are dropped when we filter out non-numeric values. 
 #We can fix this later if we decide we want load rows.
+# ---- NEW: Load and merge weather data ----
 
-    
+    # ---- NEW: Load and merge weather data ----
+    print("Loading weather data...")
+    weather = pd.read_csv("weather/2024_weather_cleaned.csv")
+
+    # Normalize column names
+    weather.rename(columns={
+        "Month": "month",
+        "Hour": "hour"
+    }, inplace=True)
+    # Convert weather hour column from 100,200,... to 1,2,... or 0–23 range
+    weather["hour"] = (weather["hour"] // 100).astype(int)
+    # Fix 24 → hour 0
+    weather.loc[weather["hour"] == 24, "hour"] = 0
+
+    # Normalize ZIP + month again after adjusting hour
+    weather["ZIP_CODE"] = weather["ZIP_CODE"].astype(str).str.zfill(5)
+    weather["month"] = weather["month"].astype(int)
+    # Ensure types match for merge keys
+    weather["ZIP_CODE"] = weather["ZIP_CODE"].astype(str).str.zfill(5)
+    weather["month"] = weather["month"].astype(int)
+    weather["hour"] = weather["hour"].astype(int)
+
+    print("Merging weather data...")
+    feeder_features = feeder_features.merge(
+        weather,
+        on=["ZIP_CODE", "month", "hour"],
+        how="left"
+    )
+
+    print("Weather coverage:", weather["ZIP_CODE"].nunique(), "ZIPs in weather file")
+    print("After merge, rows with weather:", feeder_features["Sol Rad (Ly/day)"].notna().sum())
+
+    # 8. Save in repo
+    os.makedirs("outputs", exist_ok=True)
+    feeder_features.to_csv("outputs/feeder_load_features.csv", index=False)
+    print("Saved outputs/feeder_load_features.csv")
+
+    return feeder_features   # ← correctly inside main()
+if __name__ == "__main__":
+    feeder_features = main()
