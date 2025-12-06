@@ -62,19 +62,19 @@ def process_line_zips(
       - Drop  Monthly_ICA_SG columns
       - group by month-hour and gen/load
       - Take min() of `ica_col` across line sections
-      - Store one row per feeder: feederid, Min_ICA_OF
+      - Store one row per feeder: feederid, Mean_ICA_SG
 
     Returns
     -------
     feeder_ica : pd.DataFrame
-        Columns: ['feederid', 'Min_ICA_OF']
+        Columns: ['feederid', 'Mean_ICA_SG']
     """
     records = []
     #This step extracts and opens the files within the PG&E division zip files from GRIP portal
     division_zips = glob.glob(os.path.join(input_dir, "*.zip"))
     if not division_zips: 
         print(f"[ICA] No division ZIPs found in {input_dir}")
-        return pd.DataFrame(columns=["feederid", "month", "hour", "loadorgen", "min_ica_of"])
+        return pd.DataFrame(columns=["feederid", "month", "hour", "loadorgen", "mean_ica_sg"])
     if debug: #only process first division .zip in debug mode
         division_zips = division_zips[:1]
 
@@ -128,7 +128,7 @@ def process_line_zips(
                 # filter by loading scenario. This code filters for 90th pctl loading scenario.    
                 if "loading_scenario" in df.columns and loading_scenario is not None:
                     df = df[df["loading_scenario"] == loading_scenario].copy()
-                #drop ica_sg because we care about operational flexibility constraints (ica_of)
+                #drop ica_of because we care about hourly values
                 if "monthly_ica_sg" in df.columns:
                     df = df.drop(columns=["monthly_ica_sg"])
                 # turn the feederid variable into a column, attach to every row inside zip file
@@ -141,10 +141,10 @@ def process_line_zips(
                 #because each feeder has many line sections, we take the min of ica_of across line sections 
                 grouped = (
                     df.groupby(group_cols, as_index=False)[ica_col]
-                    .min()
-                    .rename(columns={ica_col: "min_ica_of"})
+                    .mean()
+                    .rename(columns={ica_col: "mean_ica_sg"})
                 )
-                #constucting combined DF from each feeder csv, keep only grouped columns + min_ica_of
+                #constucting combined DF from each feeder csv, keep only grouped columns + mean_ica_sg
                 records.append(grouped)
 
     if not records:
@@ -152,14 +152,14 @@ def process_line_zips(
 
     feeder_ica = pd.concat(records, ignore_index=True)
     #Some feeders have multiple files, group again
-    feeder_ica = (feeder_ica.groupby(["feederid", "month", "hour", "loadorgen"], as_index=False).agg({"min_ica_of": "min"}))
+    feeder_ica = (feeder_ica.groupby(["feederid", "month", "hour", "loadorgen"], as_index=False).agg({"mean_ica_sg": "mean"}))
 
     print(
         f"[ICA] Computed feeder-level ICA for "
         f"{feeder_ica['feederid'].nunique()} feeders "
         f"across {feeder_ica['loadorgen'].unique().tolist()}."
     )
-    #columns: "feederid", "month", "hour", "loadorgen", "min_ica_of" 
+    #columns: "feederid", "month", "hour", "loadorgen", "mean_ica_sg" 
     return feeder_ica
 
 def load_calmac_load_shapes():
@@ -494,7 +494,7 @@ def main(debug: bool = False):
     feeder_ica = process_line_zips(
         input_dir="ica_data/raw_zips",
         loading_scenario=90,
-        ica_col="hourly_ica_of",
+        ica_col="hourly_ica_sg",
         debug=debug,
     )
 
