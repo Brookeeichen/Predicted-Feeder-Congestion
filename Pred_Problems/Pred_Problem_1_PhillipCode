@@ -1,0 +1,134 @@
+# ======================
+# 1. IMPORTS
+# ======================
+
+import numpy as np
+import pandas as pd
+
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.ensemble import RandomForestRegressor
+
+from sklearn.metrics import (
+    mean_squared_error,
+    mean_absolute_error,
+    r2_score,
+)
+
+
+# ======================
+# 2. LOAD DATA
+# ======================
+
+# Path to your merged features file
+# Change this if your filename is different
+DATA_PATH = "outputs/feeder_load_features_sample.csv"
+
+df = pd.read_csv(DATA_PATH)
+
+print("Loaded data from:", DATA_PATH)
+print("Shape:", df.shape)
+print("Columns:", df.columns.tolist())
+
+
+# ======================
+# 3. DEFINE TARGET & FEATURES
+# ======================
+
+# Target column: feeder headroom (MW)
+# Change this if your target has a different name
+TARGET_COL = "min_ica_of"
+
+if TARGET_COL not in df.columns:
+    raise ValueError(f"Target column '{TARGET_COL}' not found in dataframe!")
+
+# Use ONLY numeric columns as candidate features to avoid string -> float errors
+numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+
+# Feature columns = all numeric cols except target
+feature_cols = [c for c in numeric_cols if c != TARGET_COL]
+
+print("\nUsing numeric feature columns:")
+print(feature_cols)
+
+# Build modeling dataframe and drop rows with missing values in features or target
+model_df = df[feature_cols + [TARGET_COL]].dropna()
+
+X = model_df[feature_cols]
+y = model_df[TARGET_COL]
+
+print("\nAfter dropping missing values:")
+print("X shape:", X.shape)
+print("y length:", y.shape[0])
+
+
+# ======================
+# 4. TRAIN / TEST SPLIT
+# ======================
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+
+# ======================
+# 5. HELPER: REGRESSION METRICS
+# ======================
+
+def print_regression_metrics(y_true, y_pred, label=""):
+    # Calculate MSE first
+    mse = mean_squared_error(y_true, y_pred)
+    # Manually calculate RMSE from MSE
+    rmse = np.sqrt(mse)
+    mae = mean_absolute_error(y_true, y_pred)
+    r2 = r2_score(y_true, y_pred)
+
+    print(f"\n=== {label} ===")
+    print(f"RMSE: {rmse:.3f}")
+    print(f"MAE:  {mae:.3f}")
+    print(f"R²:   {r2:.3f}")
+
+
+# ======================
+# 6. DEFINE MODELS (Prediction Problem 1)
+# ======================
+
+# All models predict continuous MW headroom (min_ica_of)
+reg_models = {
+    "OLS_LinearRegression": LinearRegression(),
+    "Ridge_alpha_1": make_pipeline(
+        StandardScaler(),
+        Ridge(alpha=1.0)
+    ),
+    "Lasso_alpha_0.1": make_pipeline(
+        StandardScaler(),
+        Lasso(alpha=0.1, max_iter=10000)
+    ),
+    "RandomForest_300": RandomForestRegressor(
+        n_estimators=300,
+        random_state=42,
+        n_jobs=-1
+    ),
+}
+
+
+# ======================
+# 7. FIT & EVALUATE MODELS
+# ======================
+
+print("\n##############################")
+print("# Prediction Problem 1: Regression – Predict min_ica_of (MW headroom)")
+print("##############################")
+
+for name, model in reg_models.items():
+    # Fit model on training data
+    model.fit(X_train, y_train)
+
+    # Predict on test set
+    y_pred = model.predict(X_test)
+
+    # Print RMSE / MAE / R²
+    print_regression_metrics(y_test, y_pred, label=name)

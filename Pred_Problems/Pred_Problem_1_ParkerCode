@@ -1,0 +1,199 @@
+# ======================
+# 1. IMPORTS
+# ======================
+
+import numpy as np                  # numerical ops and array handling
+import pandas as pd                # dataframe management
+
+# model selection utilities
+from sklearn.model_selection import train_test_split  
+
+# preprocessing & pipelines
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+
+# linear models for regression & classification
+from sklearn.linear_model import (
+    LinearRegression, Ridge, Lasso, LogisticRegression
+)
+
+# KNN classifier
+from sklearn.neighbors import KNeighborsClassifier
+
+# tree-based models
+from sklearn.tree import DecisionTreeClassifier
+
+# ensemble models
+from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+
+# support vector machine
+from sklearn.svm import SVC
+
+# evaluation metrics for regression & classification
+from sklearn.metrics import (
+    mean_squared_error,        # RMSE/MAE calculations
+    mean_absolute_error,
+    r2_score,
+    confusion_matrix,          # binary & multiclass confusion matrices
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    roc_auc_score,
+    classification_report      # detailed precision/recall/F1 for multiclass
+)
+
+
+# ======================
+# 2. DATA SETUP
+# ======================
+
+# load in dataframe
+DATA_PATH = "outputs/feeder_load_features_sample.csv"   # sample file from outputs
+df = pd.read_csv(DATA_PATH)
+
+# Drop non numeric specified columns
+df = df.drop(columns=['loadorgen', 'nominal voltage (kv)'], errors='ignore')
+
+# designate response column holding feeder headroom (MW)
+response_col = "min_ica_of"
+
+# treat all other columns as features
+feature_cols = [c for c in df.columns if c != response_col]
+
+# full feature matrix
+X = df[feature_cols]
+
+# (1) regression target: continuous MW headroom
+y_reg = df[response_col]
+
+# (2) binary target: 1 = congested (<1 MW), 0 = not congested
+y_bin = (df[response_col] < 1.0).astype(int)
+
+# (3) multi-class target: 0=low risk, 1=medium risk, 2=high risk
+headroom = df[response_col]
+conditions = [
+    headroom > 5.0,                           # low risk
+    (headroom >= 1.0) & (headroom <= 5.0),    # medium risk
+    headroom < 1.0                            # high risk
+]
+choices = [0, 1, 2]
+y_tier = np.select(conditions, choices).astype(int)  # map headroom to tier
+
+
+# ======================
+# 3. HELPER FUNCTIONS FOR METRICS
+# ======================
+
+def print_regression_metrics(y_true, y_pred, label=""):
+    """
+    Computes and prints:
+    RMSE = sqrt(MSE)
+    MAE = average absolute error
+    R²  = variance explained
+
+    These measure how accurately the model predicts MW headroom.
+    """
+    rmse = mean_squared_error(y_true, y_pred, squared=False)
+    mae = mean_absolute_error(y_true, y_pred)
+    r2 = r2_score(y_true, y_pred)
+
+    print(f"\n=== {label} (Regression) ===")
+    print(f"RMSE: {rmse:.3f}")    # model’s typical MW deviation
+    print(f"MAE:  {mae:.3f}")     # simpler avg deviation
+    print(f"R²:   {r2:.3f}")      # % of variance explained
+
+
+def print_binary_metrics(y_true, y_prob, label=""):
+    """
+    Computes and prints binary classification metrics.
+    y_prob = predicted probability of congested (class=1).
+
+    Uses:
+    - confusion matrix (TP, FP, etc.)
+    - accuracy
+    - precision
+    - recall
+    - F1
+    - AUC (using continuous probabilities)
+    """
+    # convert probabilities into 0/1 predictions
+    y_pred = (y_prob >= 0.5).astype(int)
+
+    # confusion matrix components
+    cm = confusion_matrix(y_true, y_pred)
+    tn, fp, fn, tp = cm.ravel()
+
+    # classification metrics
+    acc = accuracy_score(y_true, y_pred)
+    prec = precision_score(y_true, y_pred, zero_division=0)
+    rec = recall_score(y_true, y_pred, zero_division=0)
+    f1 = f1_score(y_true, y_pred, zero_division=0)
+    auc = roc_auc_score(y_true, y_prob)
+
+    # print everything neatly
+    print(f"\n=== {label} (Binary Classification) ===")
+    print("Confusion Matrix (rows=true, cols=pred):")
+    print(cm)
+    print(f"TN={tn}, FP={fp}, FN={fn}, TP={tp}")
+    print(f"Accuracy:  {acc:.3f}")
+    print(f"Precision: {prec:.3f}")
+    print(f"Recall:    {rec:.3f}")
+    print(f"F1:        {f1:.3f}")
+    print(f"AUC:       {auc:.3f}")
+
+
+def print_multiclass_metrics(y_true, y_pred, label=""):
+    """
+    Computes macro-F1 and prints a 3x3 confusion matrix.
+    Macro-F1 = avg of F1 across all classes equally (important for imbalance).
+
+    Also prints per-class precision, recall, and F1.
+    """
+    macro_f1 = f1_score(y_true, y_pred, average="macro")
+    cm = confusion_matrix(y_true, y_pred)
+
+    print(f"\n=== {label} (Multi-Class Classification) ===")
+    print(f"Macro F1: {macro_f1:.3f}")
+    print("Confusion Matrix (rows=true, cols=pred):")
+    print(cm)
+    print("\nPer-class precision/recall/F1:")
+    print(classification_report(y_true, y_pred, digits=3))
+
+
+# ======================
+# 4. PROBLEM 1 – Regression
+# ======================
+
+print("\n##############################")
+print("# Problem 1: Continuous Regression – Predict min_ica_of (MW headroom)")
+print("##############################")
+
+# split train/test for regression task
+X_train_reg, X_test_reg, y_train_reg, y_test_reg = train_test_split(
+    X, y_reg, test_size=0.2, random_state=42
+)
+
+# define dictionary of regression models
+reg_models = {
+    "OLS": LinearRegression(),   # linear baseline model
+    "Ridge": make_pipeline(      # linear + L2 regularization
+        StandardScaler(), 
+        Ridge(alpha=1.0)
+    ),
+    "Lasso": make_pipeline(      # linear + L1 regularization (feature selection)
+        StandardScaler(), 
+        Lasso(alpha=0.1)
+    ),
+    "RandomForest": RandomForestRegressor(  # nonlinear model w/ interactions
+        n_estimators=300,
+        random_state=42,
+        n_jobs=-1
+    ),
+}
+
+# train each regression model and print metrics
+for name, model in reg_models.items():
+    model.fit(X_train_reg, y_train_reg)   # fit model to 2024 training data
+    y_pred = model.predict(X_test_reg)    # generate headroom predictions
+    print_regression_metrics(y_test_reg, y_pred, label=name)  # compute RMSE/MAE/R²
