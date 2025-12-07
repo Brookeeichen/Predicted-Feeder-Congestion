@@ -25,7 +25,7 @@ from sklearn.metrics import (
 
 # Path to your merged features file
 # Change this if your filename is different
-DATA_PATH = "outputs/feeder_load_features_sample.csv"
+DATA_PATH = "outputs/feeder_features_cleaned.csv"
 
 df = pd.read_csv(DATA_PATH)
 
@@ -40,7 +40,7 @@ print("Columns:", df.columns.tolist())
 
 # Target column: feeder headroom (MW)
 # Change this if your target has a different name
-TARGET_COL = "min_ica_of"
+TARGET_COL = "mean_ica_sg"
 
 if TARGET_COL not in df.columns:
     raise ValueError(f"Target column '{TARGET_COL}' not found in dataframe!")
