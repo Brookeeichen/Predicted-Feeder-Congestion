@@ -72,7 +72,7 @@ def print_multiclass_metrics(y_true, y_pred, label=""):
     acc = accuracy_score(y_true, y_pred)
     macro_f1 = f1_score(y_true, y_pred, average="macro")
 
-    print(f"\n=== {label} ===")
+    print(f"\n{label}")
     print(f"Accuracy: {acc:.3f}")  #float 3 decimals
     print(f"Macro F1: {macro_f1:.3f}")
     print("Classification report:")
