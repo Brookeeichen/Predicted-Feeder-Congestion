@@ -1,0 +1,227 @@
+# ======================
+# 1. IMPORTS
+# ======================
+
+#importing standard python packages
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+#model was highly collinear, so imported VIF package to find most collinear features
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+#package to split data into training and test sets
+from sklearn.model_selection import train_test_split
+#import packages to standardize data
+from sklearn.preprocessing import StandardScaler
+#import packages to do preprocessing of columns and models
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+
+#imports packages to run models
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.ensemble import RandomForestRegressor
+
+#imports evaluation metrics to judge model performance
+from sklearn.metrics import (
+    mean_squared_error,
+    mean_absolute_error,
+    r2_score,
+)
+
+
+# ======================
+# 2. LOAD DATA
+# ======================
+
+DATA_PATH = "outputs/feeder_features_cleaned_PhillipEdits.csv"
+
+df = pd.read_csv(DATA_PATH)
+
+print("Loaded data from:", DATA_PATH)
+print("Shape:", df.shape)
+print("Columns:", df.columns.tolist())
+
+# ======================
+# 3. DEFINE TARGET & FEATURES
+# ======================
+
+TARGET_COL = "mean_ica_sg"
+
+if TARGET_COL not in df.columns:
+    raise ValueError(f"Target column '{TARGET_COL}' not found in dataframe!")
+
+# Numeric features (exclude target)
+numeric_cols = [
+    col
+    for col in df.select_dtypes(include=[np.number]).columns
+    if col != TARGET_COL
+]
+
+# Define feature columns (now just numeric_cols since we have no categorical features)
+feature_cols = numeric_cols
+
+print("\nUsing feature columns:")
+print(feature_cols)
+
+# Build modeling dataframe and drop rows with missing values in features or target
+model_df = df[feature_cols + [TARGET_COL]].dropna()
+
+X = model_df[feature_cols]
+y = model_df[TARGET_COL]
+
+print("\nAfter dropping missing values:")
+print("X shape:", X.shape)
+print("y length:", y.shape[0])
+
+
+# ======================
+# 4. Exploring Collinear Relationships
+# ======================
+
+features_to_plot = [
+    'load',
+    'Sol Rad (Ly/day)',
+    'Air Temp (F)',
+    'residential customer count'
+]
+
+fig, axes = plt.subplots(2, 2, figsize=(15, 10))
+axes = axes.ravel()
+
+for idx, feature in enumerate(features_to_plot):
+    if feature in X.columns:
+        sns.histplot(X[feature], kde=True, ax=axes[idx])
+        axes[idx].set_title(f'Distribution of {feature}')
+        axes[idx].set_xlabel('')
+    else:
+        axes[idx].set_visible(False)
+        print(f"Warning: feature '{feature}' not found in X.columns")
+
+plt.tight_layout()
+plt.show()
+
+# Calculate VIF for each numeric feature
+if len(numeric_cols) > 1:
+    vif_data = pd.DataFrame()
+    vif_data["feature"] = numeric_cols
+    vif_data["VIF"] = [
+        variance_inflation_factor(X[numeric_cols].values, i)
+        for i in range(len(numeric_cols))
+    ]
+    print("\nVIF Scores (numeric features only):")
+    print(vif_data.sort_values("VIF", ascending=False))
+else:
+    print("\nNot enough numeric columns to compute VIF.")
+
+
+# ======================
+# 5. TRAIN / TEST SPLIT
+# ======================
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+stds = X.std(numeric_only=True)
+print("Columns with ~zero std:")
+print(stds[stds < 1e-12])
+
+# ======================
+# 6. HELPER: REGRESSION METRICS
+# ======================
+
+def print_regression_metrics(y_true, y_pred, label=""):
+    mse = mean_squared_error(y_true, y_pred)
+    rmse = np.sqrt(mse)
+    mae = mean_absolute_error(y_true, y_pred)
+    r2 = r2_score(y_true, y_pred)
+
+    print(f"\n=== {label} ===")
+    print(f"RMSE: {rmse:.3f}")
+    print(f"MAE:  {mae:.3f}")
+    print(f"R²:   {r2:.3f}")
+
+
+# ======================
+# 7. PREPROCESSOR
+# ======================
+
+numeric_transformer = StandardScaler()
+
+# Remove the categorical_transformer since we have no categorical features
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('num', numeric_transformer, numeric_cols)
+    ],
+    remainder='drop'
+)
+
+# ======================
+# 8. DEFINE MODELS (Prediction Problem 1)
+# ======================
+
+# All models predict continuous MW headroom (mean_ica_sg)
+reg_models = {
+    "OLS_LinearRegression": Pipeline([
+        ('preprocessor', preprocessor),
+        ('model', LinearRegression())
+    ]),
+    "Ridge_alpha_10": Pipeline([
+        ('preprocessor', preprocessor),
+        ('model', Ridge(alpha=10, random_state=42))
+    ]),
+    "Lasso_alpha_0.0316": Pipeline([
+        ('preprocessor', preprocessor),
+        ('model', Lasso(alpha=0.0316, max_iter=10000, random_state=42))
+    ]),
+    "RandomForest_300": Pipeline([
+        ('preprocessor', preprocessor),
+        ('model', RandomForestRegressor(
+            n_estimators=300,
+            random_state=42,
+            n_jobs=-1
+        ))
+    ])
+}
+
+
+# ======================
+# 9. FIT & EVALUATE MODELS
+# ======================
+
+print("\n##############################")
+print("# Prediction Problem 1: Regression – Predict mean_ica_sg (MW headroom)")
+print("##############################")
+
+for name, model in reg_models.items():
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    print_regression_metrics(y_test, y_pred, label=name)
+
+
+# ======================
+# 10. RANDOM FOREST FEATURE IMPORTANCE
+# ======================
+
+rf_model = reg_models["RandomForest_300"]  # already fitted above
+
+# Get feature names AFTER preprocessing
+preprocessor_fitted = rf_model.named_steps['preprocessor']
+feature_names = preprocessor_fitted.get_feature_names_out()
+
+importances = rf_model.named_steps['model'].feature_importances_
+
+feature_importance = pd.DataFrame({
+    'Feature': feature_names,
+    'Importance': importances
+}).sort_values('Importance', ascending=False)
+
+plt.figure(figsize=(12, 8))
+sns.barplot(x='Importance', y='Feature', data=feature_importance.head(20))
+plt.title('RandomForest Feature Importance (Top 20)')
+plt.tight_layout()
+plt.show()
+
+print("\nTop 10 Most Important Features:")
+print(feature_importance.head(10))
