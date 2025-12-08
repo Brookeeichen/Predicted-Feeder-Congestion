@@ -1,59 +1,56 @@
-# ============================================
-# Problem 3 — Multi-class congestion risk tiering
-# ============================================
-
 # 1. Imports
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
 
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import (
+    confusion_matrix,
+    ConfusionMatrixDisplay,
+    accuracy_score,
+    classification_report,
+    f1_score,
+)
 
 # 2. Load data
-# (Update the path if your CSV is in a different location)
-csv_path = "../data/feeder_features_cleaned.csv"
+
+csv_path = "../data/feeder_features_cleaned_PhillipEdits_v2.csv"
 df = pd.read_csv(csv_path)
 
-print("Data shape:", df.shape)
-df.head()
-
-# 3. Build features X and multi-class target y_tier
+print("Raw data shape:", df.shape)
 
 response_col = "mean_ica_sg"
-
-# Drop rows with missing response
 df = df.dropna(subset=[response_col])
 
-# Use only numeric columns as features (exclude response column)
+print("Data shape after dropping NaN in response:", df.shape)
+
+# 3. Define features and create 3-class target variable
+
 numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
 feature_cols = [c for c in numeric_cols if c != response_col]
 
 X = df[feature_cols]
 headroom = df[response_col]
 
-# Define 3 congestion risk tiers based on min_ica_of (headroom, in MW):
-#   0 = low risk    (min_ica_of > 5000.0)
-#   1 = medium risk (1000.0 <= min_ica_of <= 5000.0)
-#   2 = high risk   (min_ica_of < 1000.0)
+# Define 3 risk tiers
 conditions = [
     headroom > 5000.0,
     (headroom >= 1000.0) & (headroom <= 5000.0),
-    headroom < 1000.0
+    headroom < 1000.0,
 ]
 choices = [0, 1, 2]
+y_tier = np.select(conditions, choices).astype(int) 
 
-y_tier = np.select(conditions, choices).astype(int)
-
-print("Number of feature columns:", len(feature_cols))
-print("Tier distribution:")
+print("\nTier distribution:")
 print(pd.Series(y_tier).value_counts().sort_index())
 
 # 4. Train/test split
@@ -63,81 +60,139 @@ X_train, X_test, y_train, y_test = train_test_split(
     y_tier,
     test_size=0.2,
     random_state=42,
-    stratify=y_tier
+    stratify=y_tier,  #ensure train and test sets are balanced 
 )
 
-# 5. Helper: print multi-class metrics
+print("\nTrain size:", X_train.shape[0])
+print("Test size:", X_test.shape[0])
+
+# 5. Helper function for printing metrics
 
 def print_multiclass_metrics(y_true, y_pred, label=""):
     acc = accuracy_score(y_true, y_pred)
+    macro_f1 = f1_score(y_true, y_pred, average="macro")
+
     print(f"\n=== {label} ===")
-    print(f"Accuracy: {acc:.3f}")
+    print(f"Accuracy: {acc:.3f}")  #float 3 decimals
+    print(f"Macro F1: {macro_f1:.3f}")
     print("Classification report:")
     print(classification_report(y_true, y_pred))
 
-# 6. Fit and evaluate models
+# 6. Model Training
 
-# (a) Decision Tree
-dt_model = make_pipeline(
-    StandardScaler(),
-    DecisionTreeClassifier(
-        max_depth=5,
-        min_samples_leaf=50,
-        random_state=42
-    )
+# (A) Logistic Regression 
+log_model = make_pipeline(
+    SimpleImputer(strategy="median"),  # Use median imputation to handle missing numeric values robustly.
+    StandardScaler(),  # Scale features because logistic regression performs best on standardized data.
+    LogisticRegression(
+        multi_class="multinomial",   # Use true multinomial (softmax) for multi-class prediction instead of one-vs-rest.
+        solver="lbfgs",   # LBFGS is stable and efficient for multinomial logistic regression.
+        max_iter=500,  # Increase iterations to ensure the model converges on a large dataset.
+        random_state=42,   # Fix random seed for reproducible model behavior.
+    ),
 )
+
+print("\nTraining Logistic Regression (Softmax)...")
+log_model.fit(X_train, y_train)
+y_pred_log = log_model.predict(X_test)
+print_multiclass_metrics(y_test, y_pred_log, label="Logistic Regression (Softmax, 3-tier)")
+
+
+# (B) Decision Tree
+dt_model = make_pipeline(
+    SimpleImputer(strategy="median"), # Fill missing numeric values with the median to avoid losing data.
+    StandardScaler(),  # (Optional) Included for pipeline consistency; trees are scale-invariant.
+    DecisionTreeClassifier(
+        max_depth=5,  # Limit tree depth to prevent overfitting and improve generalization.
+        min_samples_leaf=50,  # Require at least 50 samples per leaf to smooth out noisy splits.
+        random_state=42. # Fix random seed for reproducible tree structure.
+    ),
+)
+
+print("\nTraining Decision Tree...")
 dt_model.fit(X_train, y_train)
 y_pred_dt = dt_model.predict(X_test)
 print_multiclass_metrics(y_test, y_pred_dt, label="Decision Tree (3-tier)")
 
-# ============================================
-# DT confusion matrix
-# ============================================
-
-dt_labels = ["Low risk (0)", "Med risk (1)", "High risk (2)"]
-
-cm_dt = confusion_matrix(y_test, y_pred_dt, labels=[0, 1, 2])
-disp_dt = ConfusionMatrixDisplay(confusion_matrix=cm_dt,
-                                 display_labels=dt_labels)
-
-plt.figure(figsize=(6, 5))
-disp_dt.plot(cmap="Reds", values_format="d")
-plt.title("Decision Tree — Test Set Tier Categorization")
-plt.xlabel("Predicted Tier")
-plt.ylabel("True Tier")
-plt.tight_layout()
-plt.show()
-
-
-# (b) Random Forest
+# (C) Random Forest 
 rf_model = make_pipeline(
-    StandardScaler(),
+    SimpleImputer(strategy="median"),  # Impute missing numeric values with the median to maintain sample size.
+    StandardScaler(),  # (Optional) Included for consistency; random forests are scale-invariant.
     RandomForestClassifier(
-        n_estimators=200,
-        random_state=42,
-        n_jobs=-1
-    )
+        n_estimators=200, # Use 200 trees to improve stability and reduce variance in predictions.
+        random_state=42, # Fix random seed to ensure reproducible model results.
+        n_jobs=-1,  # Use all CPU cores to speed up training on a large dataset.
+    ),
 )
+
+print("\nTraining Random Forest...")
 rf_model.fit(X_train, y_train)
 y_pred_rf = rf_model.predict(X_test)
 print_multiclass_metrics(y_test, y_pred_rf, label="Random Forest (3-tier)")
 
-y_pred_rf = rf_model.predict(X_test)
 
-# ============================================
-# 7. Visualization — Confusion Matrix (Random Forest)
-# ============================================
+# 7. Extract strongest predictors 
+
+# Logistic Regression coefficients 
+log_reg = log_model.named_steps["logisticregression"]
+coef_df = pd.DataFrame(
+    log_reg.coef_,
+    columns=feature_cols,
+    index=["Tier 0 (low)", "Tier 1 (med)", "Tier 2 (high)"]
+)
+
+for cls in coef_df.index:
+    print(f"\n=== Strongest predictors for {cls} ===")
+    print("Top positive coefficients:")
+    print(coef_df.loc[cls].sort_values(ascending=False).head(10))
+    print("\nTop negative coefficients:")
+    print(coef_df.loc[cls].sort_values().head(10))
+
+# Decision Tree 
+dt = dt_model.named_steps["decisiontreeclassifier"]
+dt_importances = pd.Series(dt.feature_importances_, index=feature_cols).sort_values(ascending=False)
+
+print("\nTop Decision Tree predictors:")
+print(dt_importances.head(15))
+
+# Random Forest 
+rf = rf_model.named_steps["randomforestclassifier"]
+rf_importances = pd.Series(rf.feature_importances_, index=feature_cols).sort_values(ascending=False)
+
+print("\nTop Random Forest predictors:")
+print(rf_importances.head(15))
+
+
+# 8. Visualizations - here we plot our results as confusion matrices
 
 tier_labels = ["Low risk (0)", "Med risk (1)", "High risk (2)"]
 
-cm = confusion_matrix(y_test, y_pred_rf, labels=[0, 1, 2])
-disp = ConfusionMatrixDisplay(confusion_matrix=cm,
-                              display_labels=tier_labels)
+# Logistic Regression Confusion Matrix 
+cm_log = confusion_matrix(y_test, y_pred_log, labels=[0, 1, 2])
+disp_log = ConfusionMatrixDisplay(confusion_matrix=cm_log, display_labels=tier_labels)
 
 plt.figure(figsize=(6, 5))
-disp.plot(cmap="Blues", values_format="d")
+disp_log.plot(cmap="Purples", values_format="d")
+plt.title("Logistic Regression (Softmax) — Test Set Tier Categorization")
+plt.tight_layout()
+plt.show()
+
+# Decision Tree Confusion Matrix 
+cm_dt = confusion_matrix(y_test, y_pred_dt, labels=[0, 1, 2])
+disp_dt = ConfusionMatrixDisplay(confusion_matrix=cm_dt, display_labels=tier_labels)
+
+plt.figure(figsize=(6, 5))
+disp_dt.plot(cmap="Reds", values_format="d")
+plt.title("Decision Tree — Test Set Tier Categorization")
+plt.tight_layout()
+plt.show()
+
+#  Random Forest Confusion Matrix 
+cm_rf = confusion_matrix(y_test, y_pred_rf, labels=[0, 1, 2])
+disp_rf = ConfusionMatrixDisplay(confusion_matrix=cm_rf, display_labels=tier_labels)
+
+plt.figure(figsize=(6, 5))
+disp_rf.plot(cmap="Blues", values_format="d")
 plt.title("Random Forest — Test Set Tier Categorization")
-plt.xlabel("Predicted Tier")
-plt.ylabel("True Tier")
 plt.tight_layout()
 plt.show()
