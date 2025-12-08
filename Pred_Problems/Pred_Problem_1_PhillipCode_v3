@@ -1,0 +1,252 @@
+# ======================
+# 1. IMPORTS
+# ======================
+import warnings
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy.special import expit
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+# Configure warnings
+np.seterr(all='warn')
+warnings.filterwarnings('ignore', category=RuntimeWarning)
+warnings.filterwarnings('ignore', category=UserWarning)
+
+# ======================
+# 2. HELPER FUNCTIONS
+# ======================
+def safe_predict(model, X):
+    """Safely predict using a model with numerical stability checks."""
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", RuntimeWarning)
+        try:
+            return model.predict(X)
+        except (RuntimeWarning, FloatingPointError) as e:
+            print(f"Warning during prediction: {str(e)[:100]}... Attempting to recover...")
+            X_safe = X.astype(np.float64)
+            return model.predict(X_safe)
+
+def print_regression_metrics(y_true, y_pred, label=""):
+    """Print regression metrics with error handling."""
+    try:
+        mse = mean_squared_error(y_true, y_pred)
+        rmse = np.sqrt(mse)
+        mae = mean_absolute_error(y_true, y_pred)
+        r2 = r2_score(y_true, y_pred)
+
+        print(f"\n=== {label} ===")
+        print(f"RMSE: {rmse:.3f}")
+        print(f"MAE:  {mae:.3f}")
+        print(f"R²:   {r2:.3f}")
+        return True
+    except Exception as e:
+        print(f"\n=== {label} ===")
+        print(f"Error calculating metrics: {str(e)}")
+        return False
+
+def load_data(filepath):
+    """Load and validate the dataset with error handling."""
+    try:
+        df = pd.read_csv(filepath)
+        print(f"Successfully loaded data from: {filepath}")
+        print(f"Shape: {df.shape}")
+        print("Columns:", df.columns.tolist())
+        
+        if df.empty:
+            raise ValueError("The dataset is empty")
+            
+        required_columns = ['mean_ica_sg']
+        missing_cols = [col for col in required_columns if col not in df.columns]
+        if missing_cols:
+            raise ValueError(f"Missing required columns: {missing_cols}")
+            
+        return df
+        
+    except FileNotFoundError:
+        raise FileNotFoundError(f"File not found: {filepath}")
+    except pd.errors.EmptyDataError:
+        raise ValueError("The file is empty")
+    except Exception as e:
+        raise Exception(f"Error loading data: {str(e)}")
+
+# ======================
+# 3. LOAD & VALIDATE DATA
+# ======================
+try:
+    DATA_PATH = "outputs/feeder_features_cleaned_PhillipEdits_v2.csv"
+    df = load_data(DATA_PATH)
+except Exception as e:
+    print(f"Fatal error: {str(e)}")
+    raise SystemExit(1)
+
+# ======================
+# 4. DEFINE TARGET & FEATURES
+# ======================
+TARGET_COL = "mean_ica_sg"
+
+if TARGET_COL not in df.columns:
+    raise ValueError(f"Target column '{TARGET_COL}' not found in dataframe!")
+
+# Numeric features (exclude target)
+numeric_cols = [
+    col for col in df.select_dtypes(include=[np.number]).columns
+    if col != TARGET_COL
+]
+
+# Define feature columns
+feature_cols = numeric_cols
+print("\nUsing feature columns:")
+print(feature_cols)
+
+# Build modeling dataframe and drop rows with missing values
+model_df = df[feature_cols + [TARGET_COL]].dropna()
+X = model_df[feature_cols]
+y = model_df[TARGET_COL]
+
+print("\nAfter dropping missing values:")
+print("X shape:", X.shape)
+print("y length:", y.shape[0])
+
+# ======================
+# 5. EXPLORATORY DATA ANALYSIS
+# ======================
+features_to_plot = [
+    'load',
+    'Sol Rad (Ly/day)',
+    'Air Temp (F)',
+    'residential customer count'
+]
+
+fig, axes = plt.subplots(2, 2, figsize=(15, 10))
+axes = axes.ravel()
+
+for idx, feature in enumerate(features_to_plot):
+    if feature in X.columns:
+        sns.histplot(X[feature], kde=True, ax=axes[idx])
+        axes[idx].set_title(f'Distribution of {feature}')
+        axes[idx].set_xlabel('')
+    else:
+        axes[idx].set_visible(False)
+        print(f"Warning: feature '{feature}' not found in X.columns")
+
+plt.tight_layout()
+plt.show()
+
+# Calculate VIF for each numeric feature
+if len(numeric_cols) > 1:
+    vif_data = pd.DataFrame()
+    vif_data["feature"] = numeric_cols
+    vif_data["VIF"] = [
+        variance_inflation_factor(X[numeric_cols].values, i)
+        for i in range(len(numeric_cols))
+    ]
+    print("\nVIF Scores (numeric features only):")
+    print(vif_data.sort_values("VIF", ascending=False))
+else:
+    print("\nNot enough numeric columns to compute VIF.")
+
+# ======================
+# 6. TRAIN / TEST SPLIT
+# ======================
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+stds = X.std(numeric_only=True)
+print("\nColumns with ~zero std:")
+print(stds[stds < 1e-12])
+
+# ======================
+# 7. PREPROCESSOR
+# ======================
+numeric_transformer = StandardScaler()
+
+preprocessor = ColumnTransformer(
+    transformers=[('num', numeric_transformer, numeric_cols)],
+    remainder='drop'
+)
+
+# ======================
+# 8. DEFINE MODELS
+# ======================
+reg_models = {
+    "OLS_LinearRegression": Pipeline([
+        ('preprocessor', preprocessor),
+        ('model', LinearRegression())
+    ]),
+    "Ridge_alpha_10": Pipeline([
+        ('preprocessor', preprocessor),
+        ('model', Ridge(alpha=10, random_state=42))
+    ]),
+    "Lasso_alpha_0.0316": Pipeline([
+        ('preprocessor', preprocessor),
+        ('model', Lasso(alpha=0.0316, max_iter=10000, random_state=42))
+    ]),
+    "RandomForest_300": Pipeline([
+        ('preprocessor', preprocessor),
+        ('model', RandomForestRegressor(
+            n_estimators=300,
+            random_state=42,
+            n_jobs=-1
+        ))
+    ])
+}
+
+# ======================
+# 9. TRAIN & EVALUATE MODELS
+# ======================
+print("\n" + "="*50)
+print("Prediction Problem 1: Regression – Predict mean_ica_sg (MW headroom)")
+print("="*50)
+
+for name, model in reg_models.items():
+    print(f"\nTraining {name}...")
+    try:
+        model.fit(X_train, y_train)
+        y_pred = safe_predict(model, X_test)
+        print_regression_metrics(y_test, y_pred, label=name)
+    except Exception as e:
+        print(f"Error with {name}: {str(e)}")
+        continue
+
+# ======================
+# 10. FEATURE IMPORTANCE
+# ======================
+print("\n" + "="*50)
+print("Feature Importance Analysis")
+print("="*50)
+
+try:
+    rf_model = reg_models["RandomForest_300"]
+    preprocessor_fitted = rf_model.named_steps['preprocessor']
+    feature_names = preprocessor_fitted.get_feature_names_out()
+    
+    importances = rf_model.named_steps['model'].feature_importances_
+    
+    feature_importance = pd.DataFrame({
+        'Feature': feature_names,
+        'Importance': importances
+    }).sort_values('Importance', ascending=False)
+    
+    plt.figure(figsize=(12, 8))
+    sns.barplot(x='Importance', y='Feature', data=feature_importance.head(20))
+    plt.title('RandomForest Feature Importance (Top 20)')
+    plt.tight_layout()
+    plt.show()
+    
+    print("\nTop 10 Most Important Features:")
+    print(feature_importance.head(10))
+    
+except Exception as e:
+    print(f"Error generating feature importance: {str(e)}")
+
+print("\nAnalysis complete!")

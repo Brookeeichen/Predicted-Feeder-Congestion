@@ -22,7 +22,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 # CONFIG
 # ======================
 
-DATA_PATH = "outputs/feeder_features_cleaned_PhillipEdits.csv"
+DATA_PATH = "outputs/feeder_features_cleaned_PhillipEdits_v2.csv"
 TARGET_COL = "mean_ica_sg"
 TEST_SIZE = 0.2
 RANDOM_STATE = 42
