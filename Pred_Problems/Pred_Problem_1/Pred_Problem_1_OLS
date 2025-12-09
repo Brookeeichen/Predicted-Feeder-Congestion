@@ -1,0 +1,59 @@
+import numpy as np
+import pandas as pd
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+# load dataset and define target feature
+DATA_PATH = "outputs/feeder_features_cleaned_PhillipEdits_v2.csv"
+TARGET_COL = "mean_ica_sg"
+
+df = pd.read_csv(DATA_PATH)
+
+# define feature columns as all numeric columns except the target
+feature_cols = [
+    col for col in df.select_dtypes(include=[np.number]).columns
+    if col != TARGET_COL
+]
+
+print("Using numeric feature columns:")
+print(feature_cols)
+
+# drop rows with missing values in features or target
+df_clean = df.dropna(subset=feature_cols + [TARGET_COL])
+
+# define feature matrix and target variable
+X = df_clean[feature_cols]
+y = df_clean[TARGET_COL]
+
+# train-test split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# OLS Regression Model (no pipeline)
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# evaluate model on test set
+y_pred = model.predict(X_test)
+
+mse = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse)
+r2 = r2_score(y_test, y_pred)
+
+print("\nOLS Regression Results")
+print(f"RMSE: {rmse:.3f}")
+print(f"R²:   {r2:.3f}")
+
+# extract coefficients (same order as feature_cols)
+coef = model.coef_
+
+coef_df = pd.DataFrame({
+    "feature": feature_cols,
+    "coefficient": coef
+})
+
+print("\nCoefficients")
+print(coef_df.sort_values("coefficient", ascending=False))

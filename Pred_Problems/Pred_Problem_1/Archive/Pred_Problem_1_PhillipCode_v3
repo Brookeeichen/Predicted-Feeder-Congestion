@@ -1,0 +1,333 @@
+# ======================
+# 1. IMPORTS
+# ======================
+import warnings
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from sklearn.model_selection import KFold, GridSearchCV
+from sklearn.preprocessing import StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+# Configure warnings
+np.seterr(all='warn')
+warnings.filterwarnings('ignore', category=RuntimeWarning)
+warnings.filterwarnings('ignore', category=UserWarning)
+
+
+# ======================
+# 2. HELPER FUNCTIONS
+# ======================
+def safe_predict(model, X):
+    """Safely predict using a model with numerical stability checks."""
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", RuntimeWarning)
+        try:
+            return model.predict(X)
+        except (RuntimeWarning, FloatingPointError) as e:
+            print(f"Warning during prediction: {str(e)[:100]}... Attempting to recover...")
+            X_safe = X.astype(np.float64)
+            return model.predict(X_safe)
+
+
+def print_regression_metrics(y_true, y_pred, label=""):
+    """Print regression metrics with error handling."""
+    try:
+        mse = mean_squared_error(y_true, y_pred)
+        rmse = np.sqrt(mse)
+        mae = mean_absolute_error(y_true, y_pred)
+        r2 = r2_score(y_true, y_pred)
+
+        print(f"\n=== {label} ===")
+        print(f"RMSE: {rmse:.3f}")
+        print(f"MAE:  {mae:.3f}")
+        print(f"R²:   {r2:.3f}")
+        return True
+    except Exception as e:
+        print(f"\n=== {label} ===")
+        print(f"Error calculating metrics: {str(e)}")
+        return False
+
+
+def load_data(filepath):
+    """Load and validate the dataset with error handling."""
+    try:
+        df = pd.read_csv(filepath)
+        print(f"Successfully loaded data from: {filepath}")
+        print(f"Shape: {df.shape}")
+        print("Columns:", df.columns.tolist())
+        
+        if df.empty:
+            raise ValueError("The dataset is empty")
+            
+        required_columns = ['mean_ica_sg']
+        missing_cols = [col for col in required_columns if col not in df.columns]
+        if missing_cols:
+            raise ValueError(f"Missing required columns: {missing_cols}")
+            
+        return df
+        
+    except FileNotFoundError:
+        raise FileNotFoundError(f"File not found: {filepath}")
+    except pd.errors.EmptyDataError:
+        raise ValueError("The file is empty")
+    except Exception as e:
+        raise Exception(f"Error loading data: {str(e)}")
+
+
+# ======================
+# 3. LOAD & VALIDATE DATA
+# ======================
+try:
+    DATA_PATH = "outputs/feeder_features_cleaned_PhillipEdits_v2.csv"
+    df = load_data(DATA_PATH)
+except Exception as e:
+    print(f"Fatal error: {str(e)}")
+    raise SystemExit(1)
+
+
+# ======================
+# 4. DEFINE TARGET & FEATURES
+# ======================
+TARGET_COL = "mean_ica_sg"
+
+if TARGET_COL not in df.columns:
+    raise ValueError(f"Target column '{TARGET_COL}' not found in dataframe!")
+
+# Numeric features (exclude target)
+numeric_cols = [
+    col for col in df.select_dtypes(include=[np.number]).columns
+    if col != TARGET_COL
+]
+
+feature_cols = numeric_cols
+print("\nUsing feature columns:")
+print(feature_cols)
+
+# Build modeling dataframe and drop rows with missing values
+model_df = df[feature_cols + [TARGET_COL]].dropna()
+X = model_df[feature_cols]
+y = model_df[TARGET_COL]
+
+print("\nAfter dropping missing values:")
+print("X shape:", X.shape)
+print("y length:", y.shape[0])
+
+
+# ======================
+# 5. DIAGNOSTIC – TARGET DISTRIBUTION
+# ======================
+print("\n" + "="*50)
+print("DIAGNOSTIC: Target (mean_ica_sg) distribution")
+print("="*50)
+print(y.describe())
+
+plt.figure(figsize=(8, 5))
+sns.histplot(y, kde=True)
+plt.title("Distribution of mean_ica_sg (Target)")
+plt.xlabel("mean_ica_sg")
+plt.tight_layout()
+plt.show()
+
+
+# ======================
+# 6. PREPROCESSOR
+# ======================
+numeric_transformer = StandardScaler()
+
+preprocessor = ColumnTransformer(
+    transformers=[('num', numeric_transformer, numeric_cols)],
+    remainder='drop'
+)
+
+
+# ======================
+# 7. DEFINE MODELS + PARAM GRIDS (for nested CV)
+# ======================
+models_and_grids = {
+    "OLS_LinearRegression": {
+        "estimator": Pipeline([
+            ('preprocessor', preprocessor),
+            ('model', LinearRegression())
+        ]),
+        # No hyperparameters to tune, but GridSearchCV still needs a dict
+        "param_grid": {}
+    },
+    "Ridge": {
+        "estimator": Pipeline([
+            ('preprocessor', preprocessor),
+            ('model', Ridge())
+        ]),
+        "param_grid": {
+            'model__alpha': [0.1, 1.0, 10.0, 100.0]
+        }
+    },
+    "Lasso": {
+        "estimator": Pipeline([
+            ('preprocessor', preprocessor),
+            ('model', Lasso(max_iter=10000))
+        ]),
+        "param_grid": {
+            'model__alpha': [0.001, 0.01, 0.1, 1.0]
+        }
+    },
+    "RandomForest": {
+        "estimator": Pipeline([
+            ('preprocessor', preprocessor),
+            ('model', RandomForestRegressor(
+                random_state=42,
+                n_jobs=-1
+            ))
+        ]),
+        "param_grid": {
+            'model__n_estimators': [200, 300],
+            'model__max_depth': [None, 10, 20]
+        }
+    }
+}
+
+
+# ======================
+# 8. NESTED CROSS-VALIDATION
+# ======================
+print("\n" + "="*50)
+print("Prediction Problem 1: Nested Cross-Validation – Predict mean_ica_sg")
+print("="*50)
+
+# Outer loop: unbiased performance estimate
+outer_cv = KFold(n_splits=5, shuffle=True, random_state=42)
+
+nested_results = {}  # store per-model outer-fold metrics and best params
+
+for name, cfg in models_and_grids.items():
+    print(f"\n----- Model: {name} -----")
+    estimator = cfg["estimator"]
+    param_grid = cfg["param_grid"]
+
+    outer_rmse = []
+    outer_mae = []
+    outer_r2 = []
+    outer_best_params = []
+
+    try:
+        # Outer loop
+        for fold_idx, (train_idx, test_idx) in enumerate(outer_cv.split(X, y), start=1):
+            print(f"\nOuter fold {fold_idx}...")
+            X_train_outer, X_test_outer = X.iloc[train_idx], X.iloc[test_idx]
+            y_train_outer, y_test_outer = y.iloc[train_idx], y.iloc[test_idx]
+
+            # Inner loop: hyperparameter tuning
+            inner_cv = KFold(n_splits=3, shuffle=True, random_state=fold_idx)
+
+            try:
+                grid = GridSearchCV(
+                    estimator,
+                    param_grid=param_grid,
+                    scoring='neg_root_mean_squared_error',
+                    cv=inner_cv,
+                    n_jobs=-1,
+                    error_score='raise'  # so we catch problems explicitly
+                )
+                grid.fit(X_train_outer, y_train_outer)
+            except Exception as e_inner:
+                print(f"  Error during inner CV (fold {fold_idx}) for {name}: {str(e_inner)[:200]}")
+                continue  # skip this outer fold
+
+            best_model = grid.best_estimator_
+            outer_best_params.append(grid.best_params_)
+
+            # Evaluate on the outer test split
+            try:
+                y_pred_outer = safe_predict(best_model, X_test_outer)
+                mse_outer = mean_squared_error(y_test_outer, y_pred_outer)
+                rmse_outer = np.sqrt(mse_outer)
+                mae_outer = mean_absolute_error(y_test_outer, y_pred_outer)
+                r2_outer = r2_score(y_test_outer, y_pred_outer)
+
+                outer_rmse.append(rmse_outer)
+                outer_mae.append(mae_outer)
+                outer_r2.append(r2_outer)
+
+                print(f"  Fold {fold_idx} RMSE: {rmse_outer:.3f}, MAE: {mae_outer:.3f}, R²: {r2_outer:.3f}")
+                print(f"  Best params (fold {fold_idx}): {grid.best_params_}")
+            except Exception as e_eval:
+                print(f"  Error during evaluation (fold {fold_idx}) for {name}: {str(e_eval)[:200]}")
+                continue
+
+        # After all outer folds
+        if outer_rmse:
+            print(f"\n>>> Nested CV summary for {name}:")
+            print(f"  RMSE mean ± std: {np.mean(outer_rmse):.3f} ± {np.std(outer_rmse):.3f}")
+            print(f"  MAE  mean ± std: {np.mean(outer_mae):.3f} ± {np.std(outer_mae):.3f}")
+            print(f"  R²   mean ± std: {np.mean(outer_r2):.3f} ± {np.std(outer_r2):.3f}")
+        else:
+            print(f"\n>>> No successful outer folds for {name} (all failed).")
+
+        nested_results[name] = {
+            "rmse": outer_rmse,
+            "mae": outer_mae,
+            "r2": outer_r2,
+            "best_params": outer_best_params
+        }
+
+    except Exception as e_outer:
+        print(f"High-level error during nested CV for {name}: {str(e_outer)[:200]}")
+        continue
+
+
+# ======================
+# 9. FINAL RANDOM FOREST FEATURE IMPORTANCE (REFIT ON FULL DATA)
+# ======================
+print("\n" + "="*50)
+print("RandomForest: Final Fit on Full Data & Feature Importance")
+print("="*50)
+
+try:
+    rf_cfg = models_and_grids["RandomForest"]
+    rf_estimator = rf_cfg["estimator"]
+    rf_param_grid = rf_cfg["param_grid"]
+
+    # Use GridSearchCV on full dataset to get a final best model
+    rf_grid_full = GridSearchCV(
+        rf_estimator,
+        rf_param_grid,
+        scoring='neg_root_mean_squared_error',
+        cv=3,
+        n_jobs=-1,
+        error_score='raise'
+    )
+
+    print("\nFitting RandomForest GridSearchCV on full dataset...")
+    rf_grid_full.fit(X, y)
+    best_rf = rf_grid_full.best_estimator_
+    print("Best RF params (full data):", rf_grid_full.best_params_)
+
+    # Get feature importances from the RF step inside the pipeline
+    preprocessor_fitted = best_rf.named_steps['preprocessor']
+    feature_names = preprocessor_fitted.get_feature_names_out()
+    importances = best_rf.named_steps['model'].feature_importances_
+
+    feature_importance = pd.DataFrame({
+        'Feature': feature_names,
+        'Importance': importances
+    }).sort_values('Importance', ascending=False)
+
+    plt.figure(figsize=(12, 8))
+    sns.barplot(x='Importance', y='Feature', data=feature_importance.head(20))
+    plt.title('RandomForest Feature Importance (Top 20)')
+    plt.tight_layout()
+    plt.show()
+
+    print("\nTop 10 Most Important Features:")
+    print(feature_importance.head(10))
+
+except Exception as e:
+    print(f"Error in final RandomForest fitting or feature importance: {str(e)[:200]}")
+
+print("\nNested CV analysis complete!")

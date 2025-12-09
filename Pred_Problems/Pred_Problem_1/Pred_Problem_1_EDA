@@ -1,0 +1,57 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+# load data
+DATA_PATH = "outputs/feeder_features_cleaned.csv"
+TARGET_COL = "mean_ica_sg"
+
+df = pd.read_csv(DATA_PATH)
+print(f"Shape: {df.shape}")
+print("Columns:", df.columns.tolist())
+
+# drop rows with missing values (diagnostics only)
+df_clean = df.dropna()
+print("Shape after dropping NaNs:", df_clean.shape)
+
+# histogram of target variable distribution
+plt.hist(df_clean[TARGET_COL], bins=30, edgecolor='black')
+plt.title("Distribution of Target Variable")
+plt.xlabel(TARGET_COL)
+plt.ylabel("Frequency")
+plt.show()
+
+# identify categorical variables
+categorical_vars = df_clean.select_dtypes(include=["object", "category"]).columns.tolist()
+print("\nCategorical variables:")
+print(categorical_vars if categorical_vars else "None")
+
+# identify numeric variables (exclude target)
+numeric_cols = df_clean.select_dtypes(include=[np.number]).columns.tolist()
+numeric_cols = [c for c in numeric_cols if c != TARGET_COL]
+print("\nNumeric variables:")
+print(numeric_cols)
+
+# VIF collinearity check
+X_num = df_clean[numeric_cols].astype(float)
+vif_data = []
+
+for i, col in enumerate(numeric_cols):
+    vif_val = variance_inflation_factor(X_num.values, i)
+    vif_data.append((col, vif_val))
+
+vif_df = pd.DataFrame(vif_data, columns=["feature", "VIF"]).sort_values("VIF", ascending=False)
+print("\nVIF scores:")
+print(vif_df)
+
+vif_threshold = 10
+vif_drop_candidates = vif_df.loc[vif_df["VIF"] > vif_threshold, "feature"].tolist()
+
+print(f"\nSuggested drops from VIF > {vif_threshold}:")
+print(vif_drop_candidates if vif_drop_candidates else "None")
+
+# summary
+print("\n--- Summary ---")
+print("Categorical variables:", categorical_vars)
+print("VIF-based drop candidates:", vif_drop_candidates if vif_drop_candidates else [])

@@ -1,0 +1,100 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split, KFold, cross_val_score
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+
+# load dataset and define target feature
+DATA_PATH = "outputs/feeder_features_cleaned_PhillipEdits_v2.csv"
+TARGET_COL = "mean_ica_sg"   # change to "min_ica_sg" if you want
+
+df = pd.read_csv(DATA_PATH)
+
+# use all numeric columns except the target as features
+feature_cols = [
+    col for col in df.select_dtypes(include=[np.number]).columns
+    if col != TARGET_COL
+]
+
+print("Using numeric feature columns:")
+print(feature_cols)
+
+# drop rows with missing values in features or target
+df_clean = df.dropna(subset=feature_cols + [TARGET_COL])
+
+X = df_clean[feature_cols]
+y = df_clean[TARGET_COL]
+
+# train-test split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# random forest model
+rf = RandomForestRegressor(
+    n_estimators=300,
+    max_depth=None,
+    random_state=42,
+    n_jobs=-1
+)
+
+# 10-fold cross-validation on the training set
+kfold = KFold(n_splits=10, shuffle=True, random_state=42)
+
+# scoring='neg_root_mean_squared_error' → negative RMSE, so take the negative
+cv_scores = cross_val_score(
+    rf,
+    X_train,
+    y_train,
+    cv=kfold,
+    scoring="neg_root_mean_squared_error",
+    n_jobs=-1
+)
+
+cv_rmse = -cv_scores  # make positive
+
+print("\nRandom Forest 10-Fold CV on Training Set")
+print("RMSE scores:", cv_rmse)
+print(f"Mean RMSE: {cv_rmse.mean():.3f}")
+print(f"Std  RMSE: {cv_rmse.std():.3f}")
+
+# fit model on training data
+rf.fit(X_train, y_train)
+
+y_pred = rf.predict(X_test)
+
+mse = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse)
+r2 = r2_score(y_test, y_pred)
+
+print("\nRandom Forest Test Results")
+print(f"RMSE: {rmse:.3f}")
+print(f"R²:   {r2:.3f}")
+
+# evaluate feature importances
+importances = rf.feature_importances_
+
+feat_imp_df = pd.DataFrame({
+    "feature": feature_cols,
+    "importance": importances
+}).sort_values("importance", ascending=False)
+
+# Create the plot
+plt.figure(figsize=(10, 6))
+feat_imp_df.sort_values('importance', ascending=True).plot.barh(
+    x='feature', 
+    y='importance',
+    color='skyblue',
+    figsize=(10, 8)
+)
+
+# Add labels and title
+plt.title('Feature Importances in Random Forest Model', fontsize=14)
+plt.xlabel('Importance Score')
+plt.ylabel('Features')
+plt.tight_layout()
+
+# Show the plot
+plt.show()
