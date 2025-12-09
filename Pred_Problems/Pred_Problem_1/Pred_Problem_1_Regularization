@@ -42,7 +42,7 @@ X_test_scaled = scaler.transform(X_test)
 assert np.isfinite(X_train_scaled).all(), "Non-finite values in X_train_scaled"
 assert np.isfinite(X_test_scaled).all(), "Non-finite values in X_test_scaled"
 
-# helper: compute RMSE via k-fold cross-validation
+# helper function to compute RMSE via k-fold cross-validation
 def cv_rmse(model, X, y, n_splits=5):
     kf = KFold(n_splits=n_splits, shuffle=True, random_state=42)
     neg_mse_scores = cross_val_score(

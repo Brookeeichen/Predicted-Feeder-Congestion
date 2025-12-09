@@ -1,5 +1,3 @@
-# CALMAC_plots.py
-
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -7,10 +5,7 @@ import seaborn as sns
 
 sns.set_theme(style="whitegrid")
 
-# ---------------------------
-# 1. File paths
-# ---------------------------
-
+# file paths
 PATHS = {
     "res_characteristics": "CALMAC/res_characteristics.csv",
     "res_centroids": "CALMAC/res_centroids.csv",
@@ -21,12 +16,11 @@ PATHS = {
     "nonres_segments_counts": "CALMAC/Nonres_Elec_GP_Segments_and_Counts.csv",
 }
 
+# create directory to save figures generated in
 FIG_DIR = "figures"
 os.makedirs(FIG_DIR, exist_ok=True)
 
-# ---------------------------
-# 2. Load data
-# ---------------------------
+# load data
 
 dfs = {}
 for name, path in PATHS.items():
@@ -34,9 +28,7 @@ for name, path in PATHS.items():
     dfs[name] = df_tmp
     print(f"{name}: loaded from {path} — shape = {df_tmp.shape}")
 
-# ---------------------------
-# 3. Prepare centroid + region data
-# ---------------------------
+# prepare centroid + region data
 
 # Residential centroids + climate zone (seg_cz)
 res_char = dfs["res_characteristics"]
@@ -47,7 +39,7 @@ res_cent_merged = res_cent.merge(res_char_region, on="gp", how="left")
 print("\nResidential centroids with region (seg_cz):")
 print(res_cent_merged.head())
 
-# Nonresidential centroids + climate zone (seg_cz)
+# nonresidential centroids + climate zone (seg_cz)
 nonres_char = dfs["nonres_characteristics"]
 nonres_cent = dfs["nonres_centroids"]
 nonres_char_region = nonres_char[["gp", "seg_cz"]].drop_duplicates()
@@ -56,10 +48,7 @@ nonres_cent_merged = nonres_cent.merge(nonres_char_region, on="gp", how="left")
 print("\nNonresidential centroids with region (seg_cz):")
 print(nonres_cent_merged.head())
 
-# ---------------------------
-# 4. Plot residential centroid map (by region)
-# ---------------------------
-
+# plot residential centroid map by region
 plt.figure(figsize=(7, 6))
 sns.scatterplot(
     data=res_cent_merged,
@@ -80,10 +69,7 @@ plt.savefig(res_fig_path, dpi=300, bbox_inches="tight")
 print(f"\nSaved residential centroid map to: {res_fig_path}")
 plt.close()
 
-# ---------------------------
-# 5. Plot nonresidential centroid map (by region)
-# ---------------------------
-
+# plot nonresidential centroid map by region
 plt.figure(figsize=(7, 6))
 sns.scatterplot(
     data=nonres_cent_merged,
@@ -104,13 +90,10 @@ plt.savefig(nonres_fig_path, dpi=300, bbox_inches="tight")
 print(f"Saved nonresidential centroid map to: {nonres_fig_path}")
 plt.close()
 
-# ---------------------------
-# 6. Chart 1: Residential average hourly kWh profile
-# ---------------------------
-
+# residential average hourly kWh profile
 res_gp = dfs["res_gp_elec_2024"]
 
-# Average kWh by hour across all segments and days
+# average kWh by hour across all segments and days
 avg_hourly = (
     res_gp.groupby("hour")["kwh"]
     .mean()
@@ -134,13 +117,10 @@ plt.savefig(hourly_fig_path, dpi=300, bbox_inches="tight")
 print(f"Saved average hourly kWh chart to: {hourly_fig_path}")
 plt.close()
 
-# ---------------------------
-# 7. Chart 2: Top 10 nonres segments by premise count
-# ---------------------------
-
+# top 10 nonres segments by premise count
 nonres_seg = dfs["nonres_segments_counts"]
 
-# Sum prem_count by segment industry (seg_ind)
+# sum prem_count by segment industry (seg_ind)
 seg_totals = (
     nonres_seg.groupby("seg_ind")["prem_count"]
     .sum()
