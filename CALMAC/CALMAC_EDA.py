@@ -16,10 +16,6 @@ PATHS = {
     "nonres_segments_counts": "CALMAC/Nonres_Elec_GP_Segments_and_Counts.csv",
 }
 
-# create directory to save figures generated in
-FIG_DIR = "figures"
-os.makedirs(FIG_DIR, exist_ok=True)
-
 # load data
 
 dfs = {}
@@ -64,10 +60,8 @@ plt.ylabel("Latitude")
 plt.title("Residential GP Centroids by Region")
 plt.legend(title="Region", bbox_to_anchor=(1.05, 1), loc="upper left")
 
-res_fig_path = os.path.join(FIG_DIR, "residential_centroids_by_region.png")
-plt.savefig(res_fig_path, dpi=300, bbox_inches="tight")
-print(f"\nSaved residential centroid map to: {res_fig_path}")
-plt.close()
+plt.tight_layout()
+plt.show()
 
 # plot nonresidential centroid map by region
 plt.figure(figsize=(7, 6))
@@ -85,10 +79,8 @@ plt.ylabel("Latitude")
 plt.title("Nonresidential GP Centroids by Region")
 plt.legend(title="Region", bbox_to_anchor=(1.05, 1), loc="upper left")
 
-nonres_fig_path = os.path.join(FIG_DIR, "nonresidential_centroids_by_region.png")
-plt.savefig(nonres_fig_path, dpi=300, bbox_inches="tight")
-print(f"Saved nonresidential centroid map to: {nonres_fig_path}")
-plt.close()
+plt.tight_layout()
+plt.show()
 
 # residential average hourly kWh profile
 res_gp = dfs["res_gp_elec_2024"]
@@ -112,10 +104,7 @@ plt.title("Average Residential Hourly Load Shape (All GPs, 2024)")
 plt.xticks(range(0, 24, 2))
 plt.tight_layout()
 
-hourly_fig_path = os.path.join(FIG_DIR, "residential_avg_hourly_kwh.png")
-plt.savefig(hourly_fig_path, dpi=300, bbox_inches="tight")
-print(f"Saved average hourly kWh chart to: {hourly_fig_path}")
-plt.close()
+plt.show()
 
 # top 10 nonres segments by premise count
 nonres_seg = dfs["nonres_segments_counts"]
@@ -138,9 +127,6 @@ plt.ylabel("Nonres Segment (seg_ind)")
 plt.title("Top 10 Nonresidential Segments by Premise Count")
 plt.tight_layout()
 
-nonres_seg_fig_path = os.path.join(FIG_DIR, "nonres_top10_segments_prem_count.png")
-plt.savefig(nonres_seg_fig_path, dpi=300, bbox_inches="tight")
-print(f"Saved nonres segment count chart to: {nonres_seg_fig_path}")
-plt.close()
+plt.show()
 
-print("\nAll plots generated and saved.")
+print("\nAll plots have been displayed.")
